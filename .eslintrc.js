@@ -23,12 +23,10 @@ module.exports = {
   // Base config
   extends: ["eslint:recommended"],
   plugins: ["i18next", "import"],
+  rules: {
+    "@typescript-eslint/no-explicit-any": "off",
+  },
   overrides: [
-    {
-      rules: {
-        "@typescript-eslint/no-explicit-any": "off",
-      },
-    },
     // React
     {
       files: ["**/*.{js,jsx,ts,tsx}"],
