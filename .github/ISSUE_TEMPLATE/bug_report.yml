@@ -1,0 +1,34 @@
+name: 🐛 Bug Report
+description: Something is wrong with the Stack.
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thank you for helping to improve Artst!
+
+        Please fill out this form. We can't promise a timely response,
+        but hopefully when we have the bandwidth to work on issues. Thanks!
+
+  - type: input
+    attributes:
+      label: Have you experienced this bug with the latest version of the template?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual Behavior
+      description: A concise description of what you're experiencing.
+    validations:
+      required: true

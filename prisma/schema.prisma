@@ -1,0 +1,267 @@
+// Prisma Schema.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Disclaimer: This is a Stripe demo schema.
+// It can be used in production, but you will have to adapt it to your own needs.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// ...
+// Authentication Related Models.
+// ...
+
+model Otp {
+  id       String  @id @default(cuid())
+  code     String  @unique
+  active   Boolean @default(false)
+  attempts Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id           String        @unique @default(cuid())
+  email        String        @unique
+  name         String?
+  customerId   String?       @unique
+  subscription Subscription?
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+// ...
+// Subscription Related Models.
+// ...
+
+// Plans are used to describe and group our Stripe Products.
+model Plan {
+  id            String         @id @unique
+  name          String
+  description   String?
+  active        Boolean?       @default(true)
+  limits        PlanLimit?
+  prices        Price[]
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Plan limits are used to describe the limits available to a plan.
+model PlanLimit {
+  id     String @id @default(cuid())
+  plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  planId String @unique
+
+  // Here you can define your own limits.
+  // For example, you could have a limit on the number of items a user can create.
+  maxItems Int @default(0)
+}
+
+// Prices are used to identify our plan prices.
+model Price {
+  id            String         @id @unique // Managed by Stripe - (Price ID)
+  plan          Plan           @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  planId        String
+  amount        Int
+  currency      String
+  interval      String
+  active        Boolean        @default(true)
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index(planId)
+}
+
+// Subscriptions are used to identify our customers subscriptions.
+model Subscription {
+  id                 String  @id @unique // Managed by Stripe - (Subscription ID)
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId             String  @unique
+  plan               Plan    @relation(fields: [planId], references: [id])
+  planId             String
+  price              Price   @relation(fields: [priceId], references: [id])
+  priceId            String
+  interval           String
+  status             String
+  currentPeriodStart Int
+  currentPeriodEnd   Int
+  cancelAtPeriodEnd  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, planId], name: "user_plan_index")
+  @@index(planId)
+  @@index(priceId)
+}
+
+model SpotifyTrack {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String
+  trackNumber Int
+  apiHref     String
+  spotifyUrl  String
+  durationMs  Int
+  explicit    Boolean
+  previewUrl  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spotifyAlbum   SpotifyAlbum    @relation(fields: [spotifyAlbumId], references: [id])
+  spotifyAlbumId String
+  spotifyArtists SpotifyArtist[]
+
+  @@index(spotifyAlbumId)
+}
+
+model SpotifyArtist {
+  id         String @id @default(cuid())
+  name       String
+  slug       String @unique
+  apiHref    String
+  spotifyUrl String
+  popularity Int?   @default(0)
+  followers  Int?   @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  popularityHistory SpotifyPopularity[]
+  images            SpotifyArtistImage[]
+  followersHistory  SpotifyArtistFollowers[]
+  spotifyAlbum      SpotifyAlbum[]
+  spotifyTrack      SpotifyTrack[]
+}
+
+model SpotifyAlbum {
+  id                   String   @id @default(cuid())
+  name                 String
+  slug                 String
+  type                 String // response type
+  albumType            String // "album", "single", "compilation"
+  apiHref              String
+  spotifyUrl           String
+  releaseDate          DateTime
+  releaseDatePrecision String // "year", "month", "day"
+  trackCount           Int
+  label                String?
+  popularity           Int?     @default(0)
+  isPlayable           Boolean  @default(true)
+
+  isrc String? // International Standard Recording Code
+  upc  String? // Universal Product Code
+  ean  String? // International Article Number
+
+  images            SpotifyAlbumImage[]
+  tracks            SpotifyTrack[]
+  artists           SpotifyArtist[]
+  popularityHistory SpotifyPopularity[]
+  copyrights        Copyright[]
+
+  @@index(popularity)
+}
+
+model SpotifyPopularity {
+  id         String   @id @default(cuid())
+  popularity Int?     @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  artist         SpotifyArtist? @relation(fields: [artistId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  artistId       String?
+  SpotifyAlbum   SpotifyAlbum?  @relation(fields: [spotifyAlbumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  spotifyAlbumId String?
+
+  @@index(artistId)
+  @@index(spotifyAlbumId)
+}
+
+model SpotifyArtistImage {
+  id     String @id @default(cuid())
+  url    String
+  width  Int
+  height Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spotifyArtist   SpotifyArtist @relation(fields: [spotifyArtistId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  spotifyArtistId String
+
+  @@index(spotifyArtistId)
+}
+
+model SpotifyAlbumImage {
+  id     String @id @default(cuid())
+  url    String
+  width  Int
+  height Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spotifyAlbum   SpotifyAlbum @relation(fields: [spotifyAlbumId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  spotifyAlbumId String
+
+  @@index(spotifyAlbumId)
+}
+
+// Artist followers are stored separately for time series data
+model SpotifyArtistFollowers {
+  id        String @id @default(cuid())
+  followers Int?   @default(0)
+
+  artist   SpotifyArtist @relation(fields: [artistId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  artistId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index(artistId)
+}
+
+model Copyright {
+  id        String   @id @default(cuid())
+  text      String
+  type      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  spotifyAlbum   SpotifyAlbum @relation(fields: [spotifyAlbumId], references: [id])
+  spotifyAlbumId String
+
+  @@index(spotifyAlbumId)
+}
+
+model SpotifyMarket {
+  id   String @id @default(cuid())
+  name String
+  code String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SpotifyGenreSeeds {
+  id   String @id @default(cuid())
+  seed String @unique
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,17 @@
+bun.lockb
+package-lock.json
+pnpm-lock.yaml
+pnpm-lock.yml
+yarn.lock
+
+node_modules
+
+/.cache
+
+/build
+/public/build
+.env
+
+/cypress/screenshots
+/cypress/videos
+/postgres-data
