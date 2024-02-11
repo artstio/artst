@@ -1,14 +1,5 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
-import {
-  getArtist,
-  getArtistFromDb,
-  getCachedArtist,
-} from "~/models/spotify/artist/handlers";
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import { getCachedArtist } from "~/models/spotify/artist/handlers";
 import { authenticator } from "~/services/auth/config.server";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {

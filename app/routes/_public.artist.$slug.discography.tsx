@@ -6,28 +6,12 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Navigation } from "~/components/navigation-test";
-import { PageContent, PageHeader } from "~/components/page";
+import { PageContent } from "~/components/page";
 import { Section } from "~/components/section";
 import { AlbumList } from "~/components/spotify/album-list";
 import { ArtistHeroHeader } from "~/components/spotify/artist/hero";
 import { ListenPlatformLinks } from "~/components/spotify/platform-links";
-import { TrackList } from "~/components/spotify/track-list";
-import { VerticalCard } from "~/components/spotify/vertical-card";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Typography } from "~/components/ui/typography";
-import { cn } from "~/lib/utils";
-import {
-  AlbumAggregateData,
-  AlbumAggregateProps,
-} from "~/models/spotify/album";
-import {
-  getAlbumTypeText,
-  getLargestImage,
-  isEp,
-  isRecentRelease,
-} from "~/models/spotify/utils";
 import { db } from "~/utils/db.server";
-import { createPersonSD } from "~/utils/structured-data";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { slug } = params;
@@ -68,7 +52,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   }
 };
 
-export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
     { title: `${data?.artist?.name} Discography | Artst` },
     {

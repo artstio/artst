@@ -1,8 +1,7 @@
 import { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
 import slugify from "slugify";
-import { AlbumCreateBody, AlbumUpdateBody } from "./types";
+import { AlbumCreateBody } from "./types";
 import { extractImageId } from "../image/utils";
-import { createSimplifiedTrackInput } from "../track";
 
 export const createAlbumInput = (album: Album): AlbumCreateBody => {
   return {

@@ -1,13 +1,11 @@
 import { spotify } from "~/services/spotify";
 import { db } from "~/utils/db.server";
-import { createAlbumInput, createSimplifiedAlbumInput } from "./transformers";
+import { createAlbumInput } from "./transformers";
 import { AlbumCreateBody } from "./types";
 import { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
-import slugify from "slugify";
 import { Prisma } from "@prisma/client";
-import { extractImageId } from "../image/utils";
-import { createTrackInput, createSimplifiedTrackInput } from "../track";
-import { createArtistInput, getArtist } from "../artist";
+import { createSimplifiedTrackInput } from "../track";
+import { createArtistInput } from "../artist";
 
 export async function getAlbum(id: string) {
   return spotify.albums.get(id);
@@ -177,7 +175,7 @@ const createSpotifyAlbum =
       })),
     });
 
-    const [newAlbum, tracks] = await Promise.all([createdAlbum, albumTracks]);
+    const [newAlbum] = await Promise.all([createdAlbum, albumTracks]);
 
     return newAlbum;
   };

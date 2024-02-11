@@ -1,23 +1,21 @@
-import { Form, Link } from "@remix-run/react";
-import { cn } from "~/lib/utils";
-import { buttonVariants } from "~/components/ui/button";
+import { Link } from "@remix-run/react";
 import { Icons } from "~/components/shared/icons";
 import { UserAuthForm } from "~/components/forms/user-auth-form";
 
-const BackButton = () => (
-  <Link
-    to="/"
-    className={cn(
-      buttonVariants({ variant: "outline", size: "sm" }),
-      "absolute left-4 top-4 md:left-8 md:top-8"
-    )}
-  >
-    <>
-      <Icons.chevronLeft className="mr-2 size-4" />
-      Back
-    </>
-  </Link>
-);
+// const BackButton = () => (
+//   <Link
+//     to="/"
+//     className={cn(
+//       buttonVariants({ variant: "outline", size: "sm" }),
+//       "absolute left-4 top-4 md:left-8 md:top-8"
+//     )}
+//   >
+//     <>
+//       <Icons.chevronLeft className="mr-2 size-4" />
+//       Back
+//     </>
+//   </Link>
+// );
 
 export default function LoginIndex() {
   return (

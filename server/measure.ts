@@ -5,19 +5,19 @@ export class Measurer {
   }>();
 
   async time<Result>(name: string, fn: () => Promise<Result>): Promise<Result> {
-    let start = Date.now();
+    const start = Date.now();
     try {
       return await fn();
     } finally {
-      let duration = Date.now() - start;
+      const duration = Date.now() - start;
       this.#measures.add({ name, duration });
     }
   }
 
   async toHeaders(headers = new Headers()) {
-    for (let { name, duration } of this.#measures) {
-      if (name.includes("/")) name = encodeURIComponent(name);
-      headers.append("Server-Timing", `${name};dur=${duration}`);
+    for (const { name, duration } of this.#measures) {
+      const localName = name.includes("/") ? encodeURIComponent(name) : name;
+      headers.append("Server-Timing", `${localName};dur=${duration}`);
     }
     return headers;
   }

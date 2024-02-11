@@ -1,6 +1,5 @@
-import { Person, MusicAlbum, MusicRelease } from "schema-dts";
+import { Person, MusicAlbum } from "schema-dts";
 import slugify from "slugify";
-import { getSharedEnvs } from "./envs";
 
 type PersonInput = {
   id: string;

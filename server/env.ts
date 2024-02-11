@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export let EnvSchema = z.object({
+export const EnvSchema = z.object({
   AIRTABLE_API_KEY: z.string().min(1),
   AIRTABLE_BASE: z.string().min(1),
   AIRTABLE_TABLE_ID: z.string().min(1),

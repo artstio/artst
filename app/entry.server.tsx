@@ -1,7 +1,6 @@
-import type { AppLoadContext, EntryContext } from "@remix-run/node";
+import type { EntryContext } from "@remix-run/node";
 
 import isbot from "isbot";
-import crypto from "node:crypto";
 
 import { resolve } from "node:path";
 import { PassThrough } from "node:stream";
@@ -22,8 +21,8 @@ export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
-  loadContext: AppLoadContext
+  remixContext: EntryContext
+  // loadContext: AppLoadContext
 ) {
   const callbackName = isbot(request.headers.get("user-agent"))
     ? "onAllReady"
@@ -32,7 +31,7 @@ export default async function handleRequest(
   // Internationalization (i18n).
   const i18nInstance = createInstance();
   const lng = await remixI18Next.getLocale(request);
-  const ns = remixI18Next.getRouteNamespaces(remixContext as any);
+  const ns = remixI18Next.getRouteNamespaces(remixContext);
 
   await i18nInstance
     .use(initReactI18next) // Tell our instance to use react-i18next.

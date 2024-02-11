@@ -1,9 +1,4 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { authenticator } from "~/services/auth/config.server";
 import { db } from "~/utils/db.server";
 

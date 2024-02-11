@@ -45,7 +45,7 @@ export default function Plans() {
         <h3 className="text-3xl font-bold text-gray-200">Select your plan</h3>
         <div className="my-1" />
         <p className="text-center font-semibold text-gray-400">
-          You can test the upgrade and won't be charged.
+          You can test the upgrade and won&apos;t be charged.
         </p>
       </div>
       <div className="my-1" />
@@ -57,30 +57,30 @@ export default function Plans() {
         </div>
         <div className="my-2" />
 
-        <label htmlFor="toggle" className="flex cursor-pointer items-center">
-          <div className="relative">
-            <input
-              type="checkbox"
-              id="toggle"
-              value=""
-              className="sr-only"
-              checked={planInterval === Interval.YEAR}
-              onChange={() =>
-                setPlanInterval((prev) =>
-                  prev === Interval.MONTH ? Interval.YEAR : Interval.MONTH
-                )
-              }
-            />
-            <div className="block h-8 w-14 rounded-full bg-gray-600 opacity-40" />
-            <div
-              className={`dot absolute left-1 top-1 h-6 w-6 rounded-full  transition ${
-                planInterval === Interval.MONTH
-                  ? "translate-x-0 bg-white"
-                  : "translate-x-6 bg-violet-400"
-              }`}
-            />
-          </div>
-        </label>
+        {/* <label htmlFor="toggle" className="flex cursor-pointer items-center"> */}
+        <div className="relative">
+          <input
+            type="checkbox"
+            id="toggle"
+            value=""
+            className="sr-only"
+            checked={planInterval === Interval.YEAR}
+            onChange={() =>
+              setPlanInterval((prev) =>
+                prev === Interval.MONTH ? Interval.YEAR : Interval.MONTH
+              )
+            }
+          />
+          <div className="block h-8 w-14 rounded-full bg-gray-600 opacity-40" />
+          <div
+            className={`dot absolute left-1 top-1 h-6 w-6 rounded-full  transition ${
+              planInterval === Interval.MONTH
+                ? "translate-x-0 bg-white"
+                : "translate-x-6 bg-violet-400"
+            }`}
+          />
+        </div>
+        {/* </label> */}
       </div>
 
       {/* Plans. */}
@@ -182,7 +182,7 @@ export default function Plans() {
       {!user && (
         <Link to="/login" prefetch="intent">
           <button
-            className="flex min-h-[40px] flex-row items-center justify-center rounded-xl bg-violet-500 px-6 
+            className="flex min-h-[40px] flex-row items-center justify-center rounded-xl bg-violet-500 px-6
 						  font-bold text-gray-100 transition hover:scale-105 active:brightness-90"
           >
             Get Started

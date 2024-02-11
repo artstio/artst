@@ -12,7 +12,6 @@ import LanguageDetector from "i18next-browser-languagedetector";
 
 const hydrate = async () => {
   await i18next
-    // Use the react-i18next plugin.
     .use(initReactI18next)
     // Setup client-side language detector.
     .use(LanguageDetector)
@@ -34,7 +33,6 @@ const hydrate = async () => {
   startTransition(() => {
     hydrateRoot(
       document,
-      // @ts-ignore
       <I18nextProvider i18n={i18next}>
         <StrictMode>
           <RemixBrowser />

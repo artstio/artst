@@ -45,8 +45,8 @@ export default function Login() {
 
       {/* Example Privacy Message. */}
       <p className="text-center text-sm font-semibold text-gray-400">
-        By clicking “Continue" you acknowledge that this is a simple demo, and
-        can be used in the way you like.
+        By clicking &quot;Continue&quot; you acknowledge that this is a simple
+        demo, and can be used in the way you like.
       </p>
     </div>
   );

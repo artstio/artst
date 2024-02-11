@@ -22,7 +22,7 @@ export const enum Interval {
  */
 export const enum Currency {
   DEFAULT_CURRENCY = "usd",
-  USD = "usd",
+  USD = Currency.DEFAULT_CURRENCY,
   EUR = "eur",
 }
 

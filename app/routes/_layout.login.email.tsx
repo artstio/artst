@@ -35,7 +35,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Login() {
-  let { user, hasSentEmail, email, error } = useLoaderData<typeof loader>();
+  const { user, hasSentEmail, email, error } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex w-full flex-col">
@@ -61,7 +61,7 @@ export default function Login() {
             </span>
           ) : (
             <span>
-              Type bellow your email, and we'll send you a <br /> One Time
+              Type bellow your email, and we&apos;ll send you a <br /> One Time
               Password code.
             </span>
           )}
@@ -89,7 +89,7 @@ export default function Login() {
                   type="email"
                   name="email"
                   placeholder="hello@remix.com"
-                  className="h-12 w-full rounded-xl border-2 border-violet-500 bg-transparent px-6 
+                  className="h-12 w-full rounded-xl border-2 border-violet-500 bg-transparent px-6
 							    text-lg font-semibold text-gray-200 focus:border-violet-200"
                 />
               </label>
@@ -128,7 +128,7 @@ export default function Login() {
                   type="text"
                   name="code"
                   placeholder="Paste here your code ..."
-                  className="h-12 w-full rounded-xl border-2 border-violet-500 bg-transparent px-6 
+                  className="h-12 w-full rounded-xl border-2 border-violet-500 bg-transparent px-6
 							    text-lg font-semibold text-gray-200 focus:border-violet-200"
                 />
               </label>

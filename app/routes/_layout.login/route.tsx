@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Outlet, useLocation } from "@remix-run/react";
+import { Outlet } from "@remix-run/react";
 import { authenticator } from "~/services/auth/config.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {

@@ -13,7 +13,7 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import NProgress from "nprogress";
 import { useChangeLanguage } from "./hooks/use-change-language";
 import { getTheme } from "./lib/theme.server";
@@ -23,7 +23,7 @@ import {
   useNonce,
   useTheme,
 } from "./lib/client-hints";
-import { i18nCookie, remixI18Next } from "~/i18n";
+import { remixI18Next } from "~/i18n";
 import { createUserSession } from "~/services/auth/session.server";
 import styles from "./tailwind.css";
 import { Posthog } from "~/components/posthog";
@@ -81,7 +81,7 @@ function Document({
 }: {
   children: React.ReactNode;
   lang?: string;
-  dir?: any;
+  dir?: "ltr" | "rtl";
   appConfig?: {
     googleAnalyticsId?: string;
     hotjarId?: string;
@@ -158,7 +158,7 @@ export default function App() {
     locale,
     // consentData,
   } = useLoaderData<typeof loader>();
-  const { i18n } = useTranslation();
+  // const { i18n } = useTranslation();
   useChangeLanguage(locale);
 
   return (

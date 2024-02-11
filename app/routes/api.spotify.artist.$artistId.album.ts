@@ -1,13 +1,8 @@
-import {
-  ActionFunctionArgs,
-  LoaderFunctionArgs,
-  json,
-  redirect,
-} from "@remix-run/node";
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
 import { getCachedArtistAlbums } from "~/models/spotify/album";
 import { authenticator } from "~/services/auth/config.server";
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   // await authenticator.isAuthenticated(request, { failureRedirect: '/login' });
 
   const artistId = params.artistId;
