@@ -1,4 +1,4 @@
-import { Person, MusicAlbum } from "schema-dts";
+import type { Person, MusicAlbum } from "schema-dts";
 import slugify from "slugify";
 
 type PersonInput = {

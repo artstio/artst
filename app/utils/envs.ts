@@ -8,7 +8,7 @@ declare module "@remix-run/node" {
 }
 
 declare global {
-  let ENV: ENV;
+  var ENV: ENV;
 
   interface AppConfig {
     googleAnalyticsId?: string;
@@ -29,7 +29,9 @@ declare global {
       PROD_HOST_URL: string;
     };
   }
+}
 
+declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: "development" | "production" | "test";

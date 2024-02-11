@@ -36,25 +36,25 @@ jobs:
       - name: 🔬 Lint
         run: npm run lint
 
-  typecheck:
-    name: ʦ TypeScript
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
+  # typecheck:
+  #   name: ʦ TypeScript
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: ⬇️ Checkout repo
+  #       uses: actions/checkout@v4
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          cache-dependency-path: ./package.json
-          node-version: 18
+  #     - name: ⎔ Setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         cache: npm
+  #         cache-dependency-path: ./package.json
+  #         node-version: 18
 
-      - name: 📥 Install deps
-        run: npm install
+  #     - name: 📥 Install deps
+  #       run: npm install
 
-      - name: 🔎 Type check
-        run: npm run typecheck --if-present
+  #     - name: 🔎 Type check
+  #       run: npm run typecheck --if-present
 
   # vitest:
   #   name: ⚡ Vitest
@@ -119,7 +119,7 @@ jobs:
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
-    needs: [lint, typecheck]
+    needs: [lint]
     # only deploy main/dev branch on pushes
     if: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
 

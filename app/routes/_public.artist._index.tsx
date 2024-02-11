@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { AlbumList, AlbumListProps } from "~/components/spotify/album-list";
+import type { AlbumListProps } from "~/components/spotify/album-list";
+import { AlbumList } from "~/components/spotify/album-list";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { db } from "~/utils/db.server";
 
@@ -10,8 +11,16 @@ export const loader = async () => {
       images: true,
       spotifyAlbum: {
         include: {
-          artists: true,
-          tracks: true,
+          artists: {
+            include: {
+              images: true,
+            },
+          },
+          tracks: {
+            include: {
+              spotifyArtists: true,
+            },
+          },
           images: true,
         },
       },
@@ -33,9 +42,7 @@ export default function ArtistListPage() {
           id={artist.id}
           name={artist.name}
           images={artist.images.map((image) => image.url)}
-          albums={artist.spotifyAlbum.map((album) => ({
-            ...album,
-          }))}
+          albums={artist.spotifyAlbum}
         />
       ))}
     </div>
