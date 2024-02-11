@@ -1,29 +1,29 @@
-import { useContext, useEffect } from 'react';
-import posthog from 'posthog-js';
-import { PostHogProvider } from 'posthog-js/react';
-import type { PropsWithChildren } from 'react';
+import { useContext, useEffect } from "react";
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
+import type { PropsWithChildren } from "react";
 // import { CookieConsentContext } from '~/components/CookieConsent';
 
 export interface PosthogProps extends PropsWithChildren {
-	apiKey: string;
-	apiUrl: string;
-	visitorId: string;
+  apiKey: string;
+  apiUrl: string;
+  visitorId: string;
 }
 
 export const Posthog = (props: PosthogProps) => {
-	// const { analytics } = useContext(CookieConsentContext);
+  // const { analytics } = useContext(CookieConsentContext);
 
-	useEffect(() => {
-		posthog.init(props.apiKey, {
-			// eslint-disable-next-line camelcase
-			api_host: props.apiUrl,
-			loaded: posthog => {
-				posthog.identify(props.visitorId);
-			},
-			// persistence: analytics === true ? 'cookie' : 'memory',
-			persistence: 'memory',
-		});
-	}, [props.apiKey, props.apiUrl, props.visitorId]);
+  useEffect(() => {
+    posthog.init(props.apiKey, {
+      // eslint-disable-next-line camelcase
+      api_host: props.apiUrl,
+      loaded: (posthog) => {
+        posthog.identify(props.visitorId);
+      },
+      // persistence: analytics === true ? 'cookie' : 'memory',
+      persistence: "memory",
+    });
+  }, [props.apiKey, props.apiUrl, props.visitorId]);
 
-	return <PostHogProvider client={posthog}>{props.children}</PostHogProvider>;
+  return <PostHogProvider client={posthog}>{props.children}</PostHogProvider>;
 };

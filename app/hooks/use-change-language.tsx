@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Change language polyfill
@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
  * @param locale{string} - locale to change to
  */
 export const useChangeLanguage = (locale: string) => {
-	const { i18n } = useTranslation();
-	useEffect(() => {
-		i18n.changeLanguage(locale);
-	}, [locale, i18n]);
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(locale);
+  }, [locale, i18n]);
 };

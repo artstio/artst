@@ -12,10 +12,10 @@ import Backend from "i18next-fs-backend";
 import { createInstance } from "i18next";
 import { I18nextProvider, initReactI18next } from "react-i18next";
 import { i18nConfig, remixI18Next } from "~/i18n";
-import { getSharedEnvs } from "~/utils/envs";
+// import { getSharedEnvs } from "~/utils/envs";
 
 const ABORT_DELAY = 5_000;
-global.ENV = getSharedEnvs();
+// global.ENV = getSharedEnvs();
 
 export default async function handleRequest(
   request: Request,

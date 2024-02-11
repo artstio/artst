@@ -6,6 +6,6 @@
  * @see {@link https://posthog.com/docs/feature-flags/manual}
  */
 export enum Features {
-	AUTH = 'auth',
-	HELLO = 'hello',
+  AUTH = "auth",
+  HELLO = "hello",
 }

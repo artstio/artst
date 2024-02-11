@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { DataFunctionArgs } from "@remix-run/server-runtime";
+import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
 
 declare module "@remix-run/node" {
-  export interface LoaderArgs extends DataFunctionArgs {
+  export interface LoaderArgs extends LoaderFunctionArgs {
     context: { visitorId: string };
   }
 }

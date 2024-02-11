@@ -1,2 +1,2 @@
-export * from './i18n';
-export * from './i18next.server';
+export * from "./i18n";
+export * from "./i18next.server";
