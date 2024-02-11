@@ -1,8 +1,8 @@
-bun.lockb
-package-lock.json
-pnpm-lock.yaml
-pnpm-lock.yml
-yarn.lock
+# bun.lockb
+# package-lock.json
+# pnpm-lock.yaml
+# pnpm-lock.yml
+# yarn.lock
 
 node_modules
 
