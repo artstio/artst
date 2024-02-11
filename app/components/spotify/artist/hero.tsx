@@ -49,7 +49,7 @@ export function ArtistHeroHeader({
 
         <div className="absolute inset-0 flex flex-col items-start justify-end">
           <PageContent>
-            <Typography variant="h1" className="text-6xl text-primary-foreground">
+            <Typography variant="h1" className="text-6xl text-white">
               {artist.name}
             </Typography>
           </PageContent>
