@@ -56,7 +56,7 @@ export const useScreenSize = () => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [getSize, isClient]);
 
   if (screenSize.width < 576) {
     screenSize.screen = BreakPoint.xs;
