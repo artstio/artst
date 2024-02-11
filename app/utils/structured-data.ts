@@ -14,7 +14,7 @@ export const createPersonSD = ({ id, name, email }: PersonInput): Person => {
     name,
     email,
     url: `${
-      global.ENV?.DEV_HOST_URL || "http://localhost:3000"
+      global.ENV?.BASE_URL || "http://localhost:3000"
     }/artists/${slugify(name, {
       lower: true,
     })}`,
@@ -32,7 +32,7 @@ export const createMusicAlbumSD = (
     // video // TODO: Add video
     byArtist: artist,
     url: `${
-      global.ENV?.DEV_HOST_URL || "http://localhost:3000"
+      global.ENV?.BASE_URL || "http://localhost:3000"
     }/albums/${slugify(name, {
       lower: true,
     })}`,

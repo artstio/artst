@@ -1,51 +1,18 @@
+/**
+ * By default, Remix will handle hydrating your app on the client for you.
+ * You are free to delete this file if you'd like to, but if you ever want it revealed again, you can run `npx remix reveal` ✨
+ * For more information, see https://remix.run/docs/en/main/file-conventions/entry.client
+ */
+
 import { RemixBrowser } from "@remix-run/react";
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
-import { getInitialNamespaces } from "remix-i18next";
-import { I18nextProvider, initReactI18next } from "react-i18next";
-import { i18nConfig } from "~/i18n";
-
-import i18next from "i18next";
-import Backend from "i18next-http-backend";
-import LanguageDetector from "i18next-browser-languagedetector";
-
-const hydrate = async () => {
-  await i18next
-    .use(initReactI18next)
-    // Setup client-side language detector.
-    .use(LanguageDetector)
-    // Setup backend.
-    .use(Backend)
-    .init({
-      // Spread configuration.
-      ...i18nConfig,
-      // Detects the namespaces your routes rendered while SSR use
-      // and pass them here to load the translations.
-      ns: getInitialNamespaces(),
-      backend: { loadPath: "/locales/{{lng}}/{{ns}}.json" },
-      detection: {
-        // We'll detect the language only server-side with remix-i18next.
-        // By using `<html lang>` attribute we communicate to the Client.
-        order: ["htmlTag"],
-      },
-    });
-  startTransition(() => {
-    hydrateRoot(
-      document,
-      <I18nextProvider i18n={i18next}>
-        <StrictMode>
-          <RemixBrowser />
-        </StrictMode>
-      </I18nextProvider>
-    );
-  });
-};
-
-if (typeof requestIdleCallback === "function") {
-  requestIdleCallback(hydrate);
-} else {
-  // Safari doesn't support requestIdleCallback
-  // https://caniuse.com/requestidlecallback
-  setTimeout(hydrate, 1);
-}
+startTransition(() => {
+  hydrateRoot(
+    document,
+    <StrictMode>
+      <RemixBrowser />
+    </StrictMode>
+  );
+});

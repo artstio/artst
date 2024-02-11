@@ -1,54 +1,52 @@
-# syntax = docker/dockerfile:1
+# base node image
+FROM node:18-bullseye-slim as base
 
-# Adjust BUN_VERSION as desired
-ARG BUN_VERSION=1.0.7
-FROM oven/bun:${BUN_VERSION} as base
+# set for base and all layer that inherit from it
+ENV NODE_ENV production
 
-LABEL fly_launch_runtime="Remix/Prisma"
+# Install openssl for Prisma
+RUN apt-get update && apt-get install -y openssl
 
-# Remix/Prisma app lives here
-WORKDIR /app
+# Install all node_modules, including dev dependencies
+FROM base as deps
 
-# Set production environment
-ENV NODE_ENV="production"
+WORKDIR /myapp
 
-# Throw-away build stage to reduce size of final image
+ADD package.json .npmrc ./
+RUN npm install --include=dev
+
+# Setup production node_modules
+FROM base as production-deps
+
+WORKDIR /myapp
+
+COPY --from=deps /myapp/node_modules /myapp/node_modules
+ADD package.json .npmrc ./
+RUN npm prune --omit=dev
+
+# Build the app
 FROM base as build
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-  apt-get install -y build-essential openssl pkg-config python-is-python3
+WORKDIR /myapp
 
-# Install node modules
-COPY --link bun.lockb package.json ./
-RUN bun install
+COPY --from=deps /myapp/node_modules /myapp/node_modules
 
-# Generate Prisma Client
-COPY --link prisma .
-RUN bunx prisma generate
+ADD prisma .
+RUN npx prisma generate
 
-# Copy application code
-COPY --link . .
+ADD . .
+RUN npm run build
 
-# Build application
-RUN bun run build
-
-# Remove development dependencies
-RUN rm -rf node_modules && \
-  bun install --ci
-
-
-# Final stage for app image
+# Finally, build the production image with minimal footprint
 FROM base
 
-# Install packages needed for deployment
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y openssl && \
-  rm -rf /var/lib/apt/lists /var/cache/apt/archives
+WORKDIR /myapp
 
-# Copy built application
-COPY --from=build /app /app
+COPY --from=production-deps /myapp/node_modules /myapp/node_modules
+COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
 
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD [ "bun", "run", "start" ]
+COPY --from=build /myapp/build /myapp/build
+COPY --from=build /myapp/public /myapp/public
+ADD . .
+
+CMD ["npm", "start"]

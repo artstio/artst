@@ -2,19 +2,16 @@ import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   json,
   useLoaderData,
-  useNavigation,
-  useRouteError,
 } from "@remix-run/react";
 import clsx from "clsx";
 // import { useTranslation } from "react-i18next";
-import NProgress from "nprogress";
+// import NProgress from "nprogress";
 import { useChangeLanguage } from "./hooks/use-change-language";
 import { getTheme } from "./lib/theme.server";
 import {
@@ -23,21 +20,22 @@ import {
   useNonce,
   useTheme,
 } from "./lib/client-hints";
-import { remixI18Next } from "~/i18n";
+// import { remixI18Next } from "~/i18n";
 import { createUserSession } from "~/services/auth/session.server";
-import styles from "./tailwind.css";
+
 import { Posthog } from "~/components/posthog";
 import { ExposeAppConfig } from "~/components/expose-app-config";
-import { useEffect } from "react";
+// import { useTranslation } from "react-i18next";
+import stylesheet from "~/tailwind.css";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: stylesheet },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const [locale, cookieData] = await Promise.all([
-    remixI18Next.getLocale(request),
+  const [cookieData] = await Promise.all([
+    // remixI18Next.getLocale(request),
     createUserSession(request),
   ]);
   return json(
@@ -53,7 +51,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         posthogToken: process.env.POSTHOG_TOKEN,
         posthogApi: process.env.POSTHOG_API,
       },
-      locale,
+      // locale,
       requestInfo: {
         hints: getHints(request),
         userPrefs: {
@@ -73,113 +71,58 @@ export const handle = {
   i18n: "common",
 };
 
-function Document({
-  children,
-  lang = "en",
-  dir = "ltr",
-  appConfig,
-}: {
-  children: React.ReactNode;
-  lang?: string;
-  dir?: "ltr" | "rtl";
-  appConfig?: {
-    googleAnalyticsId?: string;
-    hotjarId?: string;
-    isProduction: boolean;
-    sentryDsn?: string;
-    visitorId: string;
-    posthogToken: string;
-    posthogApi: string;
-  };
-}) {
-  const navigation = useNavigation();
-
+export default function App() {
+  const {
+    appConfig,
+    // locale,
+    // consentData,
+  } = useLoaderData<typeof loader>();
   const theme = useTheme();
   const nonce = useNonce();
-
-  useEffect(() => {
-    if (navigation.state === "idle") NProgress.done();
-    else NProgress.start();
-  }, [navigation.state]);
+  // const { i18n } = useTranslation();
+  // console.log("locale", locale);
+  // useChangeLanguage(locale);
 
   return (
-    <html lang={lang} className={clsx(theme)} dir={dir}>
-      {appConfig ? (
-        <Posthog
-          apiKey={appConfig.posthogToken}
-          apiUrl={appConfig.posthogApi}
-          visitorId={appConfig.visitorId}
-        >
-          <head>
-            <ClientHintCheck nonce={nonce} />
-            <ExposeAppConfig appConfig={appConfig} nonce={nonce} />
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-            <Meta />
-            <Links />
-          </head>
-          <body>
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-            {process.env.NODE_ENV === "development" && <LiveReload />}
-          </body>
-        </Posthog>
-      ) : (
-        <>
-          <head>
-            <ClientHintCheck nonce={nonce} />
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-            <Meta />
-            <Links />
-          </head>
-          <body>
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-            {process.env.NODE_ENV === "development" && <LiveReload />}
-          </body>
-        </>
-      )}
+    <html
+      // lang={locale}
+      className={clsx(theme)}
+    >
+      <Posthog
+        apiKey={appConfig.posthogToken}
+        apiUrl={appConfig.posthogApi}
+        visitorId={appConfig.visitorId}
+      >
+        <head>
+          <ClientHintCheck nonce={nonce} />
+          <ExposeAppConfig appConfig={appConfig} nonce={nonce} />
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+        </head>
+        <body>
+          <Outlet
+            context={{
+              appConfig: appConfig,
+              // locale: locale,
+            }}
+          />
+          <ScrollRestoration />
+          <Scripts />
+        </body>
+      </Posthog>
     </html>
   );
 }
 
-export default function App() {
-  const {
-    appConfig,
-    locale,
-    // consentData,
-  } = useLoaderData<typeof loader>();
-  // const { i18n } = useTranslation();
-  useChangeLanguage(locale);
-
-  return (
-    <Document lang={locale} appConfig={appConfig}>
-      <Outlet
-        context={{
-          appConfig: appConfig,
-          locale: locale,
-        }}
-      />
-    </Document>
-  );
-}
-
-export function ErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
-  return (
-    <Document>
-      {/* add the UI you want your users to see */}
-      <Scripts />
-    </Document>
-  );
-}
+// export function ErrorBoundary() {
+//   const error = useRouteError();
+//   console.error(error);
+//   return (
+//     <Document>
+//       {/* add the UI you want your users to see */}
+//       <Scripts />
+//     </Document>
+//   );
+// }

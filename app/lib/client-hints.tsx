@@ -18,7 +18,7 @@ export const { getHints } = hintsUtils;
 // Remix theme utils below
 export function useRequestInfo() {
   const data = useRouteLoaderData("root") as SerializeFrom<typeof rootLoader>;
-  return data.requestInfo;
+  return data?.requestInfo ?? {};
 }
 
 export function useHints() {

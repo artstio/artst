@@ -1,6 +1,6 @@
 app = "artst"
-
 primary_region = "fra"
+
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
@@ -50,7 +50,7 @@ processes = []
     interval = "10s"
     grace_period = "5s"
     method = "get"
-    path = "/healthcheck"
+    path = "/api/healthcheck"
     protocol = "http"
     timeout = "2s"
     tls_skip_verify = false

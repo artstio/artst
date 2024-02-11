@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
+// import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
 
-declare module "@remix-run/node" {
-  export interface LoaderArgs extends LoaderFunctionArgs {
-    context: { visitorId: string };
-  }
-}
+// declare module "@remix-run/node" {
+// export interface LoaderArgs extends LoaderFunctionArgs {
+//   context: { visitorId: string };
+// }
+// }
 
 declare global {
   var ENV: ENV;
@@ -25,6 +25,7 @@ declare global {
   interface Window {
     ENV: {
       NODE_ENV: "development" | "production" | "test";
+      BASE_URL: string;
       DEV_HOST_URL: string;
       PROD_HOST_URL: string;
     };
@@ -39,6 +40,7 @@ declare global {
       ENCRYPTION_SECRET: string;
       DATABASE_URL: string;
 
+      BASE_URL: string;
       DEV_HOST_URL: string;
       PROD_HOST_URL: string;
 
@@ -70,6 +72,7 @@ declare global {
  */
 export function getSharedEnvs() {
   return {
+    BASE_URL: process.env.BASE_URL,
     DEV_HOST_URL: process.env.DEV_HOST_URL,
     PROD_HOST_URL: process.env.PROD_HOST_URL,
   };
