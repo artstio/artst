@@ -1,4 +1,5 @@
 import { isRouteErrorResponse, useRouteError } from "@remix-run/react";
+
 import { Card } from "./ui/card";
 
 export function ErrorBoundary() {

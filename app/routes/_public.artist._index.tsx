@@ -1,5 +1,6 @@
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+
 import type { AlbumListProps } from "~/components/spotify/album-list";
 import { AlbumList } from "~/components/spotify/album-list";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -73,7 +74,7 @@ function ArtistCard({
         <AvatarFallback>{name[0]}</AvatarFallback>
       </Avatar>
 
-      {albums && <AlbumList albums={albums} />}
+      {albums ? <AlbumList albums={albums} /> : null}
     </li>
   );
 }

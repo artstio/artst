@@ -6,13 +6,13 @@ import type { ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import type { Stripe } from "stripe";
 
-import { stripe } from "~/services/stripe/config.server";
-import { PlanId } from "~/services/stripe/plans";
-import { retrieveStripeSubscription } from "~/services/stripe/api/retrieve-subscription";
-import { getUserByCustomerId } from "~/models/user/get-user";
+import { deleteSubscriptionById } from "~/models/subscription/delete-subscription";
 import { getSubscriptionById } from "~/models/subscription/get-subscription";
 import { updateSubscriptionByUserId } from "~/models/subscription/update-subscription";
-import { deleteSubscriptionById } from "~/models/subscription/delete-subscription";
+import { getUserByCustomerId } from "~/models/user/get-user";
+import { retrieveStripeSubscription } from "~/services/stripe/api/retrieve-subscription";
+import { stripe } from "~/services/stripe/config.server";
+import { PlanId } from "~/services/stripe/plans";
 
 /**
  * Gets Stripe event signature from request header.

@@ -1,4 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
+
 import { db } from "~/utils/db.server";
 
 /**

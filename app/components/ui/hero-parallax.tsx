@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { Link } from "@remix-run/react";
 import {
   motion,
   useScroll,
@@ -7,7 +7,7 @@ import {
   useSpring,
   MotionValue,
 } from "framer-motion";
-import { Link } from "@remix-run/react";
+import React from "react";
 
 export const HeroParallax = ({
   products,

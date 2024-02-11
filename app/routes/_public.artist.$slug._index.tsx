@@ -5,6 +5,7 @@ import {
   redirect,
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+
 import { Navigation } from "~/components/navigation-test";
 import { PageContent } from "~/components/page";
 import { Section } from "~/components/section";
@@ -112,8 +113,7 @@ export default function ArtistPage() {
         >
           <div className="overflow-x-auto snap-x">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 snap-x-mandatory overflow-x-auto snap-type-mandatory snap-mandatory snap-align-start">
-              {artist.spotifyAlbum.length > 0 &&
-                artist.spotifyAlbum.map((album, index) => (
+              {artist.spotifyAlbum.length > 0 ? artist.spotifyAlbum.map((album, index) => (
                   <VerticalCard
                     key={`${album.id}-vertical-card`}
                     name={album.name}
@@ -128,7 +128,7 @@ export default function ArtistPage() {
                       to: `/album/${album.id}`,
                     }}
                   />
-                ))}
+                )) : null}
             </div>
           </div>
         </Section>

@@ -1,16 +1,16 @@
-import type { LoaderFunctionArgs } from "@remix-run/node";
 import type { User } from "@prisma/client";
-
+import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect, json } from "@remix-run/node";
 import { useLoaderData, Outlet } from "@remix-run/react";
+
+import { Footer } from "~/components/footer";
+import { Navigation } from "~/components/navigation";
 import { authenticator } from "~/services/auth/config.server";
 
-import { Navigation } from "~/components/navigation";
-import { Footer } from "~/components/footer";
 
-type LoaderData = {
+interface LoaderData {
   user: User | null;
-};
+}
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await authenticator.isAuthenticated(request);

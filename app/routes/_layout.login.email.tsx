@@ -70,16 +70,13 @@ export default function Login() {
       </div>
 
       {/* Error messages. */}
-      {error && (
-        <>
+      {error ? <>
           <strong className="text-center text-red-500">{error.message}</strong>
           <div className="my-3" />
-        </>
-      )}
+        </> : null}
 
       {/* Email Form. */}
-      {!user && !hasSentEmail && (
-        <>
+      {!user && !hasSentEmail ? <>
           <Form method="post" autoComplete="off" className="w-full">
             <fieldset>
               <label className="font-semibold text-gray-200">
@@ -112,12 +109,10 @@ export default function Login() {
               <span>Send Code</span>
             </button>
           </Form>
-        </>
-      )}
+        </> : null}
 
       {/* Verify Code Form. */}
-      {hasSentEmail && (
-        <div className="flex flex-col items-center">
+      {hasSentEmail ? <div className="flex flex-col items-center">
           <Form method="post" autoComplete="off" className="w-full">
             <fieldset>
               <label className="font-semibold text-gray-200">
@@ -165,8 +160,7 @@ export default function Login() {
               <span>Request new Code</span>
             </button>
           </Form>
-        </div>
-      )}
+        </div> : null}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import type { Features } from "~/features";
-import PostHogClient from "~/services/posthog";
 import { getVisitorIdFromRequest } from "~/services/auth/session.server";
+import PostHogClient from "~/services/posthog";
 
 /**
  * @name hasFeature

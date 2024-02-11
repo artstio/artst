@@ -1,5 +1,6 @@
-import type { Stripe } from "stripe";
 import type { User, Price } from "@prisma/client";
+import type { Stripe } from "stripe";
+
 import { stripe } from "~/services/stripe/config.server";
 
 export async function createStripeSubscription(

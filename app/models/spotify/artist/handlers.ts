@@ -1,8 +1,10 @@
+import { Artist } from "@spotify/web-api-ts-sdk";
+
 import { spotify } from "~/services/spotify";
 import { db } from "~/utils/db.server";
+
 import { createArtistInput } from "./transformers";
 import { ArtistCreateBody, ArtistUpdateBody, PrismaArtist } from "./types";
-import { Artist } from "@spotify/web-api-ts-sdk";
 
 export async function getArtist(id: string) {
   return spotify.artists.get(id);

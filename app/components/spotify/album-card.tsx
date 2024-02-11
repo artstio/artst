@@ -1,12 +1,14 @@
-import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { DiscIcon } from "@radix-ui/react-icons";
 import { LinksFunction } from "@remix-run/node";
-import { Typography } from "../ui/typography";
-import { Badge } from "../ui/badge";
+
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
+import { cn } from "~/lib/utils";
 import { type AlbumAggregateData } from "~/models/spotify/album";
-import { MaybeJsonified } from "~/utils/types";
 import { getLargestImage, isRecentRelease } from "~/models/spotify/utils";
+import { MaybeJsonified } from "~/utils/types";
+
+import { Badge } from "../ui/badge";
+import { Typography } from "../ui/typography";
 
 type ArtistAlbumCardProps = React.ComponentProps<typeof Card>;
 
@@ -39,15 +41,13 @@ export function ArtistAlbumCardMDOT({
     <>
       <Card className={cn("w-60", className)} {...props}>
         <CardHeader>
-          {largestImage && (
-            <img
+          {largestImage ? <img
               src={largestImage.url}
               width={largestImage.width}
               height={largestImage.height}
               alt={`${name} Album Cover`}
               className="object-cover h-full w-full rounded-t-md bg-neutral-900"
-            />
-          )}
+            /> : null}
         </CardHeader>
         <CardContent className="grid gap-1 mt-2">
           <div className="flex flex-col">
@@ -60,9 +60,7 @@ export function ArtistAlbumCardMDOT({
           </span>
 
           <div className="flex">
-            {isRecentRelease(releaseDate) && (
-              <Badge variant="outline">New</Badge>
-            )}
+            {isRecentRelease(releaseDate) ? <Badge variant="outline">New</Badge> : null}
           </div>
         </CardContent>
       </Card>
@@ -109,15 +107,13 @@ export function ArtistAlbumCard({
       <Card {...props} className={cn("", className)}>
         <CardContent className="grid grid-cols-[auto,1fr] gap-4">
           <div>
-            {largestImage && (
-              <img
+            {largestImage ? <img
                 src={largestImage.url}
                 width={largestImage.width}
                 height={largestImage.height}
                 alt={`${name} Album Cover`}
                 className="object-cover h-40 w-40 bg-neutral-900"
-              />
-            )}
+              /> : null}
           </div>
           <div>
             <div className="flex flex-col">
@@ -130,10 +126,8 @@ export function ArtistAlbumCard({
             </span>
 
             <div className="flex">
-              {isRecentRelease && <Badge variant="outline">New</Badge>}
-              {popularity && (
-                <Badge variant="outline">Popularity: {popularity}</Badge>
-              )}
+              {isRecentRelease ? <Badge variant="outline">New</Badge> : null}
+              {popularity ? <Badge variant="outline">Popularity: {popularity}</Badge> : null}
             </div>
           </div>
         </CardContent>

@@ -1,4 +1,5 @@
 import type { ActionFunctionArgs } from "@remix-run/node";
+
 import { authenticator } from "~/services/auth/config.server";
 
 export async function action({ request }: ActionFunctionArgs) {

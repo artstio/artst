@@ -1,18 +1,20 @@
-import { ImageProps } from "~/models/spotify/image/types";
-import { Typography } from "../ui/typography";
 import { Link } from "@remix-run/react";
 
-type LinkProps = {
-  to: string;
-};
+import { ImageProps } from "~/models/spotify/image/types";
 
-type VerticalCardProps = {
+import { Typography } from "../ui/typography";
+
+interface LinkProps {
+  to: string;
+}
+
+interface VerticalCardProps {
   image: ImageProps;
   name: string;
   subtexts?: string[];
   // artists?: string[];
   linkProps: LinkProps;
-};
+}
 
 export const VerticalCard = ({
   name,
@@ -50,8 +52,7 @@ export const VerticalCard = ({
               >
                 {name}
               </Typography>
-              {subtexts && (
-                <div className="flex items-center gap-0.5">
+              {subtexts ? <div className="flex items-center gap-0.5">
                   {subtexts.map((subtext, index) => (
                     <div key={index} className="flex items-center">
                       <Typography
@@ -64,16 +65,13 @@ export const VerticalCard = ({
 
                       {/* separator dot */}
                       <>
-                        {index < subtexts.length - 1 && (
-                          <span className="text-neutral-500 mx-1 leading-tight">
+                        {index < subtexts.length - 1 ? <span className="text-neutral-500 mx-1 leading-tight">
                             •
-                          </span>
-                        )}
+                          </span> : null}
                       </>
                     </div>
                   ))}
-                </div>
-              )}
+                </div> : null}
             </div>
           </div>
           {/* </AlbumLink> */}

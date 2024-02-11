@@ -1,11 +1,15 @@
+import { Prisma } from "@prisma/client";
+import { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
+
 import { spotify } from "~/services/spotify";
 import { db } from "~/utils/db.server";
+
+import { createArtistInput } from "../artist";
+import { createSimplifiedTrackInput } from "../track";
+
 import { createAlbumInput } from "./transformers";
 import { AlbumCreateBody } from "./types";
-import { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
-import { Prisma } from "@prisma/client";
-import { createSimplifiedTrackInput } from "../track";
-import { createArtistInput } from "../artist";
+
 
 export async function getAlbum(id: string) {
   return spotify.albums.get(id);

@@ -1,3 +1,4 @@
+import { SpotifyFill } from "akar-icons";
 import {
   AlertTriangle,
   ArrowRight,
@@ -24,7 +25,6 @@ import {
   X,
   LucideIcon,
 } from "lucide-react";
-import { SpotifyFill } from "akar-icons";
 
 export type Icon = LucideIcon;
 

@@ -1,10 +1,10 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
+
+import { deleteUserById } from "~/models/user/delete-user";
+import { getUserById } from "~/models/user/get-user";
 import { authenticator } from "~/services/auth/config.server";
 import { getSession, destroySession } from "~/services/auth/session.server";
-
-import { getUserById } from "~/models/user/get-user";
-import { deleteUserById } from "~/models/user/delete-user";
 import { deleteStripeCustomer } from "~/services/stripe/api/delete-customer";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -27,7 +27,7 @@ export async function action({ request }: ActionFunctionArgs) {
   if (user.customerId) await deleteStripeCustomer(user.customerId);
 
   // Destroy session.
-  let session = await getSession(request.headers.get("Cookie"));
+  const session = await getSession(request.headers.get("Cookie"));
   return redirect("/", {
     headers: {
       "Set-Cookie": await destroySession(session),

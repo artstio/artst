@@ -5,6 +5,7 @@ import {
   redirect,
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+
 import { Navigation } from "~/components/navigation-test";
 import { PageContent } from "~/components/page";
 import { Section } from "~/components/section";
@@ -16,9 +17,9 @@ import {
   getLargestImage,
   getReleaseDate,
 } from "~/models/spotify/utils";
+import PostHogClient from "~/services/posthog";
 import { db } from "~/utils/db.server";
 import { createMusicAlbumSD, createPersonSD } from "~/utils/structured-data";
-import PostHogClient from "~/services/posthog";
 
 export const loader = async ({
   context: { visitorId },
@@ -137,8 +138,7 @@ export default function ArtistPage() {
 
       <PageContent className="space-y-12">
         <div className="grid sm:grid-cols-2 gap-4 md:gap-8 lg:gap-12">
-          {albumImage && (
-            <div className="dark:bg-transparent flex items-start justify-center">
+          {albumImage ? <div className="dark:bg-transparent flex items-start justify-center">
               <img
                 src={albumImage.url}
                 alt={`${album.name} cover`}
@@ -148,8 +148,7 @@ export default function ArtistPage() {
                 loading="lazy"
                 itemProp="image"
               />
-            </div>
-          )}
+            </div> : null}
           <div className="space-y-4 md:space-y-8 lg:space-y-12">
             <div>
               {/* <div className="flex items-center gap-2">

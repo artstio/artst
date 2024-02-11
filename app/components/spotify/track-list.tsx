@@ -1,11 +1,13 @@
-import { TrackAggregateData } from "~/models/spotify/track";
-import { Typography } from "../ui/typography";
 import { Link } from "@remix-run/react";
+
+import { TrackAggregateData } from "~/models/spotify/track";
 import { formatDuration } from "~/models/spotify/utils";
 
-type TrackListProps = {
+import { Typography } from "../ui/typography";
+
+interface TrackListProps {
   tracks: any[];
-};
+}
 
 export function TrackListItem({ track }: { track: TrackAggregateData }) {
   return (
@@ -23,8 +25,7 @@ export function TrackListItem({ track }: { track: TrackAggregateData }) {
               {track.name}
             </Typography>
           </Link>
-          {track.spotifyArtists.length > 0 && (
-            <div className="flex items-center gap-1">
+          {track.spotifyArtists.length > 0 ? <div className="flex items-center gap-1">
               {track.spotifyArtists.map((artist) => (
                 <Link key={artist.id} to={`/artist/${artist.slug}`}>
                   <Typography
@@ -36,8 +37,7 @@ export function TrackListItem({ track }: { track: TrackAggregateData }) {
                   </Typography>
                 </Link>
               ))}
-            </div>
-          )}
+            </div> : null}
         </div>
       </div>
       <Typography variant="muted" size="sm">

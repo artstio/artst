@@ -1,8 +1,10 @@
 import { Link } from "@remix-run/react";
-import { Button, buttonVariants } from "../ui/button";
-import { Icons } from "~/components/shared/icons";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { Icons } from "~/components/shared/icons";
+
+import { Button, buttonVariants } from "../ui/button";
 
 export const ListenPlatformButton = ({
   name,

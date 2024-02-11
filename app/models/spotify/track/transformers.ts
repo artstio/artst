@@ -1,5 +1,6 @@
 import { Track, SimplifiedTrack } from "@spotify/web-api-ts-sdk";
 import slugify from "slugify";
+
 import { TrackCreateBody } from "./types";
 
 export const createTrackInput = (track: Track): TrackCreateBody => {

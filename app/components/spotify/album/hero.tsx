@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+
 import { PageContent } from "~/components/page";
 import { MaxWidthWrapper } from "~/components/page/max-width-wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -13,6 +14,7 @@ import {
   getSmallestImage,
 } from "~/models/spotify/utils";
 import { MaybeJsonified } from "~/utils/types";
+
 import { ListenPlatformLinks } from "../platform-links";
 
 export function AlbumHeroHeader({
@@ -49,19 +51,17 @@ export function AlbumHeroHeader({
       <div>
         <>
           <div className="flex flex-col md:flex-row gap-6">
-            {heroImage && (
-              <div>
+            {heroImage ? <div>
                 <img
                   src={heroImage.url}
-                  alt={`${album.name} cover image`}
+                  alt={`${album.name} cover`}
                   width={256}
                   height={256}
                   className="w-64 h-64 bg-neutral-950"
                   loading="lazy"
                   itemProp="image"
                 />
-              </div>
-            )}
+              </div> : null}
             <div className="flex flex-col justify-between">
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
@@ -73,13 +73,11 @@ export function AlbumHeroHeader({
                   {album.name}
                 </Typography>
                 <div className="flex flex-col gap-2">
-                  {album.artists.length > 0 && (
-                    <div className="mt-3">
+                  {album.artists.length > 0 ? <div className="mt-3">
                       {album.artists.map((artist) => (
                         <ArtistLink key={artist.slug} artist={artist} />
                       ))}
-                    </div>
-                  )}
+                    </div> : null}
                   <div className="flex items-center gap-2">
                     <Typography variant="muted" size="sm">
                       {new Date(album.releaseDate).getFullYear().toString()}
@@ -152,9 +150,7 @@ function ArtistLink({
       className="flex items-center gap-2 hover:underline"
     >
       <Avatar className="w-5 h-5">
-        {artist.images?.[0] && (
-          <AvatarImage src={artist.images[0].url} alt={artist.name} />
-        )}
+        {artist.images?.[0] ? <AvatarImage src={artist.images[0].url} alt={artist.name} /> : null}
         <AvatarFallback>{artist.name[0]}</AvatarFallback>
       </Avatar>
       <Typography variant="p" weight="medium">

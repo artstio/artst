@@ -3,17 +3,16 @@ import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 
-import { authenticator } from "~/services/auth/config.server";
+import { CheckoutButton } from "~/components/stripe/checkout-button";
 import { getSubscriptionByUserId } from "~/models/subscription/get-subscription";
-import { getDefaultCurrency } from "~/utils/locales";
-
+import { authenticator } from "~/services/auth/config.server";
 import {
   PlanId,
   Interval,
   Currency,
   PRICING_PLANS,
 } from "~/services/stripe/plans";
-import { CheckoutButton } from "~/components/stripe/checkout-button";
+import { getDefaultCurrency } from "~/utils/locales";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await authenticator.isAuthenticated(request);
@@ -96,15 +95,12 @@ export default function Plans() {
               }`}
             >
               {/* Thumbnail. */}
-              {plan.id === PlanId["FREE"] && (
-                <img
+              {plan.id === PlanId["FREE"] ? <img
                   src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/star_1.png"
                   alt=""
                   className="h-24 w-24 select-none transition hover:scale-105 hover:brightness-110"
-                />
-              )}
-              {plan.id === PlanId["STARTER"] && (
-                <div className="relative">
+                /> : null}
+              {plan.id === PlanId["STARTER"] ? <div className="relative">
                   <img
                     src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/star_1.png"
                     alt=""
@@ -115,16 +111,13 @@ export default function Plans() {
                     alt=""
                     className="absolute right-0 top-[-10px] h-8 w-8 select-none opacity-60 hue-rotate-60 transition hover:scale-105 hover:brightness-110"
                   />
-                </div>
-              )}
+                </div> : null}
 
-              {plan.id === PlanId["PRO"] && (
-                <img
+              {plan.id === PlanId["PRO"] ? <img
                   src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/star_2.png"
                   alt=""
                   className="h-24 w-24 select-none hue-rotate-[200deg] transition hover:scale-105 hover:brightness-110"
-                />
-              )}
+                /> : null}
               <div className="m-4" />
 
               {/* Name. */}
@@ -166,29 +159,25 @@ export default function Plans() {
               <div className="my-3" />
 
               {/* Checkout Component. */}
-              {user && (
-                <CheckoutButton
+              {user ? <CheckoutButton
                   currentPlanId={subscription?.planId ?? null}
                   planId={plan.id}
                   planName={plan.name}
                   planInterval={planInterval}
-                />
-              )}
+                /> : null}
             </div>
           );
         })}
       </div>
 
-      {!user && (
-        <Link to="/login" prefetch="intent">
+      {!user ? <Link to="/login" prefetch="intent">
           <button
             className="flex min-h-[40px] flex-row items-center justify-center rounded-xl bg-violet-500 px-6
 						  font-bold text-gray-100 transition hover:scale-105 active:brightness-90"
           >
             Get Started
           </button>
-        </Link>
-      )}
+        </Link> : null}
     </div>
   );
 }

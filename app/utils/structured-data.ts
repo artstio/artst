@@ -1,11 +1,11 @@
 import type { Person, MusicAlbum } from "schema-dts";
 import slugify from "slugify";
 
-type PersonInput = {
+interface PersonInput {
   id: string;
   name: string;
   email?: string;
-};
+}
 
 export const createPersonSD = ({ id, name, email }: PersonInput): Person => {
   return {

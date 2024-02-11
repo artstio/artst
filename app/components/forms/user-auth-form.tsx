@@ -3,14 +3,16 @@
 // import { useForm } from 'react-hook-form';
 // import * as z from 'zod';
 
-import { cn } from "~/lib/utils";
-// import { userAuthSchema } from '@/lib/validations/auth';
+import { Form, useFetcher } from "@remix-run/react";
+
+import { Icons } from "~/components/shared/icons";
 import { Button, buttonVariants } from "~/components/ui/button";
+// import { userAuthSchema } from '@/lib/validations/auth';
 import { Input, InputWithLabel } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { cn } from "~/lib/utils";
 // import { toast } from '~/components/ui/use-toast';
-import { Icons } from "~/components/shared/icons";
-import { Form, useFetcher } from "@remix-run/react";
+
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
@@ -85,9 +87,7 @@ export function UserAuthForm({ className, type, ...props }: UserAuthFormProps) {
             {/* {errors?.email && <p className="px-1 text-xs text-red-600">{errors.email.message}</p>} */}
           </div>
           <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 size-4 animate-spin" />
-            )}
+            {isLoading ? <Icons.spinner className="mr-2 size-4 animate-spin" /> : null}
             {type === "register" ? "Sign Up with Email" : "Sign In with Email"}
           </Button>
         </div>

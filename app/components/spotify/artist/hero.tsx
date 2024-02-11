@@ -1,13 +1,15 @@
 import { Link } from "@remix-run/react";
+import { useSmartcrop } from "use-smartcrop";
+
 import { PageContent } from "~/components/page";
 import { Button } from "~/components/ui/button";
 import { Typography } from "~/components/ui/typography";
 import { cn } from "~/lib/utils";
 import { ArtistAggregateData } from "~/models/spotify/artist";
 import { getLargestImage, getSmallestImage } from "~/models/spotify/utils";
-import { MaybeJsonified } from "~/utils/types";
-import { useSmartcrop } from "use-smartcrop";
 import { useScreenSize } from "~/utils/hooks";
+import { MaybeJsonified } from "~/utils/types";
+
 import { ListenPlatformButton } from "../listen-platform-button";
 
 const heroHeight =
@@ -33,17 +35,15 @@ export function ArtistHeroHeader({
   return (
     <section className="absolute w-full top-0 -z-20">
       <div className="relative w-full py-12 md:py-16 xl:py-20 min-h-[30vh] md:min-h-[35vh]">
-        {heroImage && cropped && (
-          <img
+        {heroImage && cropped ? <img
             src={cropped}
-            alt={`${artist.name} cover image`}
+            alt={`${artist.name} cover`}
             width={200}
             height={400}
             className="absolute inset-0 object-cover w-full h-full"
             loading="lazy"
             itemProp="image"
-          />
-        )}
+          /> : null}
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 

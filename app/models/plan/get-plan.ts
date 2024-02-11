@@ -1,4 +1,5 @@
 import type { Prisma, Plan } from "@prisma/client";
+
 import { db } from "~/utils/db.server";
 
 export async function getPlanById(

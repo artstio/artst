@@ -1,10 +1,11 @@
 import type { User } from "@prisma/client";
 import { Link, Form, useLocation } from "@remix-run/react";
+
 import { MaxWidthWrapper } from "./page/max-width-wrapper";
 
-type NavigationProps = {
+interface NavigationProps {
   user: User | null;
-};
+}
 
 export function Navigation({ user }: NavigationProps) {
   const location = useLocation();
@@ -49,8 +50,7 @@ export function Navigation({ user }: NavigationProps) {
 
           {!user &&
             location &&
-            (location.pathname === "/" || location.pathname === "/plans") && (
-              <>
+            (location.pathname === "/" || location.pathname === "/plans") ? <>
                 <div className="mx-3" />
                 <Link
                   to="/login"
@@ -59,12 +59,10 @@ export function Navigation({ user }: NavigationProps) {
                 >
                   Log In
                 </Link>
-              </>
-            )}
+              </> : null}
 
           {/* Log Out Form Button. */}
-          {user && (
-            <>
+          {user ? <>
               <div className="mx-3" />
               <Form action="/auth/logout" method="post">
                 <button
@@ -74,8 +72,7 @@ export function Navigation({ user }: NavigationProps) {
                   Log Out
                 </button>
               </Form>
-            </>
-          )}
+            </> : null}
         </div>
       </header>
     </MaxWidthWrapper>

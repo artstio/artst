@@ -10,23 +10,25 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import clsx from "clsx";
+
 // import { useTranslation } from "react-i18next";
 // import NProgress from "nprogress";
+import { ExposeAppConfig } from "~/components/expose-app-config";
+import { Posthog } from "~/components/posthog";
+import { createUserSession } from "~/services/auth/session.server";
+import stylesheet from "~/tailwind.css";
+
 import { useChangeLanguage } from "./hooks/use-change-language";
-import { getTheme } from "./lib/theme.server";
 import {
   ClientHintCheck,
   getHints,
   useNonce,
   useTheme,
 } from "./lib/client-hints";
+import { getTheme } from "./lib/theme.server";
 // import { remixI18Next } from "~/i18n";
-import { createUserSession } from "~/services/auth/session.server";
 
-import { Posthog } from "~/components/posthog";
-import { ExposeAppConfig } from "~/components/expose-app-config";
 // import { useTranslation } from "react-i18next";
-import stylesheet from "~/tailwind.css";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -85,7 +87,7 @@ export default function App() {
 
   return (
     <html
-      // lang={locale}
+      lang={'en'}
       className={clsx(theme)}
     >
       <Posthog

@@ -1,26 +1,30 @@
+import { DiscIcon } from "@radix-ui/react-icons";
 import { LinksFunction } from "@remix-run/node";
-import { cn } from "~/lib/utils";
-import { Card, CardContent, CardHeader } from "~/components/ui/card";
-import { Typography } from "~/components/ui/typography";
+import { Link } from "@remix-run/react";
+
 import { Badge } from "~/components/ui/badge";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { DiscIcon } from "@radix-ui/react-icons";
+import { Typography } from "~/components/ui/typography";
+import { cn } from "~/lib/utils";
 import {
   AlbumAggregateProps,
   type AlbumAggregateData,
 } from "~/models/spotify/album";
-import { MaybeJsonified } from "~/utils/types";
-import { formatDuration, isEp } from "~/models/spotify/utils";
-import { Section } from "../section";
 import { TrackAggregateProps } from "~/models/spotify/track";
-import { TrackList } from "./track-list";
-import { Link } from "@remix-run/react";
+import { formatDuration, isEp } from "~/models/spotify/utils";
+import { MaybeJsonified } from "~/utils/types";
+
+import { Section } from "../section";
 import { Separator } from "../ui/separator";
+
+import { TrackList } from "./track-list";
+
 
 // type ArtistAlbumCardProps = React.ComponentProps<typeof Card>;
 
@@ -38,13 +42,13 @@ export type AlbumCardProps = MaybeJsonified<AlbumAggregateData> & {
 
 export type AlbumListProps = AlbumCardProps[];
 
-type ImageProps = {
+interface ImageProps {
   id: string;
   url: string;
   spotifyArtistId?: string;
   width: number;
   height: number;
-};
+}
 
 function getSmallestImage(images?: ImageProps[]) {
   if (!images) {
@@ -149,15 +153,13 @@ export function ArtistAlbumCard(props: AlbumCardProps) {
     <Card className={cn("", className)} {...rest}>
       <CardContent className="grid grid-cols-[auto,1fr] gap-4 md:gap-8">
         <div>
-          {largestImage && (
-            <img
+          {largestImage ? <img
               src={largestImage.url}
               width={largestImage.width}
               height={largestImage.height}
               alt={`${name} Album Cover`}
               className="object-cover h-40 w-40 bg-neutral-900"
-            />
-          )}
+            /> : null}
         </div>
         <div className="space-y-2">
           <div className="flex flex-col">
@@ -186,7 +188,7 @@ function AlbumBadges(album: AlbumCardProps) {
 
   return (
     <div className="flex gap-2">
-      {isRecentRelease && <Badge variant="outline">New</Badge>}
+      {isRecentRelease ? <Badge variant="outline">New</Badge> : null}
 
       <PopularityBadge popularity={album.popularity} />
     </div>
@@ -206,10 +208,10 @@ export function AlbumList({ albums }: { albums: AlbumListProps }) {
   return (
     <div className="space-y-6 md:space-y-8">
       {albums.map((album, index) => (
-        <div className="space-y-4 md:space-y-6">
+        <div key={album.id} className="space-y-4 md:space-y-6">
           <AlbumTrackList key={album.id} album={album} />
 
-          {index < albums.length - 1 && <Separator />}
+          {index < albums.length - 1 ? <Separator /> : null}
         </div>
       ))}
     </div>
@@ -258,8 +260,7 @@ export function AlbumTrackList({ album }: { album: AlbumAggregateProps }) {
     <>
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          {image && (
-            <Link to={`/album/${album.id}`}>
+          {image ? <Link to={`/album/${album.id}`}>
               <img
                 src={image.url}
                 width={40}
@@ -267,8 +268,7 @@ export function AlbumTrackList({ album }: { album: AlbumAggregateProps }) {
                 alt={`${album.name} Album Cover`}
                 className="object-cover h-24 w-24 bg-neutral-900"
               />
-            </Link>
-          )}
+            </Link> : null}
           <Link to={`/album/${album.id}`} className="flex flex-col gap-2">
             <Typography variant="h2" className="font-bold">
               {album.name}

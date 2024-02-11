@@ -1,12 +1,11 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-
 import { redirect } from "@remix-run/node";
-import { authenticator } from "~/services/auth/config.server";
 
-import { getUserById } from "~/models/user/get-user";
 import { getPlanById } from "~/models/plan/get-plan";
-import { getDefaultCurrency } from "~/utils/locales";
+import { getUserById } from "~/models/user/get-user";
+import { authenticator } from "~/services/auth/config.server";
 import { createStripeCheckoutSession } from "~/services/stripe/api/create-checkout";
+import { getDefaultCurrency } from "~/utils/locales";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await authenticator.isAuthenticated(request, { failureRedirect: "/login" });

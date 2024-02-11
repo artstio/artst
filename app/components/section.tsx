@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+
 import { Typography } from "./ui/typography";
 
 export function Section({
@@ -21,8 +22,7 @@ export function Section({
           {title}
         </Typography>
 
-        {showAllProps && (
-          <Link
+        {showAllProps ? <Link
             to={showAllProps.to}
             aria-label={showAllProps.altText ?? `See all content for ${title}`}
           >
@@ -33,8 +33,7 @@ export function Section({
             >
               {showAllProps.text}
             </Typography>
-          </Link>
-        )}
+          </Link> : null}
       </div>
       {children}
     </div>

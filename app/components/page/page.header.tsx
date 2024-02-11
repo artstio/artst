@@ -1,7 +1,7 @@
-import { cn } from "~/lib/utils";
 import { Typography } from "~/components/ui/typography";
+import { cn } from "~/lib/utils";
 
-type PageHeaderProps = {
+interface PageHeaderProps {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
   description?: string;
@@ -9,7 +9,7 @@ type PageHeaderProps = {
   badges?: React.ReactNode;
   withGutter?: boolean;
   withBorder?: boolean;
-};
+}
 
 export function PageHeader({
   title,
@@ -38,22 +38,20 @@ export function PageHeader({
               {title}
             </Typography>
 
-            {badges && badges}
+            {badges ? badges : null}
           </div>
 
-          {subtitle && <Typography variant="secondary">{subtitle}</Typography>}
-          {description && (
-            <div>
+          {subtitle ? <Typography variant="secondary">{subtitle}</Typography> : null}
+          {description ? <div>
               {/* <Balancer> */}
               <Typography variant="muted" className="mt-2" size="sm">
                 {description}
               </Typography>
               {/* </Balancer> */}
-            </div>
-          )}
+            </div> : null}
         </div>
 
-        {actions && <div className="grow-0">{actions}</div>}
+        {actions ? <div className="grow-0">{actions}</div> : null}
       </div>
     </div>
   );

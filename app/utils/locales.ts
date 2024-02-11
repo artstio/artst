@@ -1,4 +1,5 @@
 import { getClientLocales } from "remix-utils/locales/server";
+
 import { Currency } from "~/services/stripe/plans";
 
 export function getDefaultCurrency(request: Request) {

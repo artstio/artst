@@ -1,3 +1,6 @@
+import type { ActionFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useFetcher, useFetchers } from "@remix-run/react";
 import { Moon, Sun } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
@@ -7,9 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { useFetcher, useFetchers } from "@remix-run/react";
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { setTheme } from "~/lib/theme.server";
 
 enum Theme {
@@ -18,7 +18,7 @@ enum Theme {
   SYSTEM = "system",
 }
 
-export const themes: Array<Theme> = Object.values(Theme);
+export const themes: Theme[] = Object.values(Theme);
 
 function isTheme(value: unknown): value is Theme {
   return typeof value === "string" && themes.includes(value as Theme);

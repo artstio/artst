@@ -1,6 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLocation } from "@remix-run/react";
+
 import { authenticator } from "~/services/auth/config.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -16,8 +17,7 @@ export default function Login() {
   return (
     <div className="m-auto flex h-full max-w-md flex-col items-center justify-center px-6">
       {/* Headers. */}
-      {location && location.pathname === "/login" && (
-        <>
+      {location && location.pathname === "/login" ? <>
           <div className="flex w-full flex-col items-center">
             <img
               src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/map.png"
@@ -36,8 +36,7 @@ export default function Login() {
             </p>
           </div>
           <div className="my-3" />
-        </>
-      )}
+        </> : null}
 
       {/* Outlet. */}
       <Outlet />

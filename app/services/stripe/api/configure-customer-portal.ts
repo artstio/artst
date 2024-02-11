@@ -1,10 +1,11 @@
-import type { PlanId } from "../plans";
 import { stripe } from "~/services/stripe/config.server";
 
-type BillingPortalProducts = {
+import type { PlanId } from "../plans";
+
+interface BillingPortalProducts {
   product: PlanId;
   prices: string[];
-};
+}
 
 export async function configureStripeCustomerPortal(
   products: BillingPortalProducts[]

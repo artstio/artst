@@ -1,4 +1,5 @@
 import type { User } from "@prisma/client";
+
 import { stripe } from "~/services/stripe/config.server";
 
 export async function deleteStripeCustomer(customerId?: User["customerId"]) {

@@ -1,8 +1,10 @@
+import { SpotifyArtist } from "@prisma/client";
 import { Artist } from "@spotify/web-api-ts-sdk";
 import slugify from "slugify";
-import { ArtistCreateBody, ArtistUpdateBody } from "./types";
-import { SpotifyArtist } from "@prisma/client";
+
 import { extractImageId } from "../image/utils";
+
+import { ArtistCreateBody, ArtistUpdateBody } from "./types";
 
 export const createArtistInput = (artist: Artist): ArtistCreateBody => {
   return {

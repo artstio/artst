@@ -2,9 +2,9 @@ import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 
-import { authenticator } from "~/services/auth/config.server";
 import { getUserById } from "~/models/user/get-user";
 import { updateUserById } from "~/models/user/update-user";
+import { authenticator } from "~/services/auth/config.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await authenticator.isAuthenticated(request, {

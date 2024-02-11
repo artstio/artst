@@ -1,9 +1,9 @@
 import type { JsonifyObject } from "type-fest/source/jsonify";
 
-export type Pagination = {
+export interface Pagination {
   limit?: MaxInt<50>;
   offset?: number;
-};
+}
 
 export type MaxInt<T extends number> = number extends T
   ? number

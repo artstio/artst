@@ -1,6 +1,6 @@
 import { createCookieSessionStorage } from "@remix-run/node";
-import { v4 as uuid } from "uuid";
 import type { Session } from "@remix-run/node";
+import { v4 as uuid } from "uuid";
 
 export const sessionStorage = createCookieSessionStorage({
   cookie: {

@@ -3,7 +3,7 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export type SendEmailBody = {
+export interface SendEmailBody {
   sender: {
     name: string;
     email: string;
@@ -14,7 +14,7 @@ export type SendEmailBody = {
   }[];
   subject: string;
   htmlContent: string;
-};
+}
 
 export const sendEmail = async (body: SendEmailBody) => {
   try {

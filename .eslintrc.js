@@ -46,6 +46,8 @@ module.exports = {
         ],
       },
       rules: {
+        "@typescript-eslint/consistent-type-definitions": "off",
+        "react/prop-types": "off",
         "react/jsx-no-leaked-render": [
           "warn",
           { validStrategies: ["ternary"] },
@@ -77,6 +79,9 @@ module.exports = {
         "prettier",
       ],
       rules: {
+        "no-var": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-explicit-any": "warn",
         "import/order": [
           "error",
           {

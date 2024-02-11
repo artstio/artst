@@ -1,14 +1,14 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { authenticator } from "~/services/auth/config.server";
 
-import { getUserById } from "~/models/user/get-user";
+
 import { getPlanById } from "~/models/plan/get-plan";
-import { getSubscriptionByUserId } from "~/models/subscription/get-subscription";
 import { createSubscription } from "~/models/subscription/create-subscription";
-
-import { PlanId } from "~/services/stripe/plans";
+import { getSubscriptionByUserId } from "~/models/subscription/get-subscription";
+import { getUserById } from "~/models/user/get-user";
+import { authenticator } from "~/services/auth/config.server";
 import { createStripeSubscription } from "~/services/stripe/api/create-subscription";
+import { PlanId } from "~/services/stripe/plans";
 import { getDefaultCurrency } from "~/utils/locales";
 
 export async function loader({ request }: LoaderFunctionArgs) {

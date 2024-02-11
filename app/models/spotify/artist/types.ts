@@ -1,4 +1,5 @@
 import { Prisma, SpotifyArtist } from "@prisma/client";
+
 import { db } from "~/utils/db.server";
 
 export type ArtistCreateBody = Prisma.Args<

@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
+
 import { PageHeader } from "./page";
-import SettingsNavLink from "./settings-nav-link";
 import { MaxWidthWrapper } from "./page/max-width-wrapper";
+import SettingsNavLink from "./settings-nav-link";
 
 export default function SettingsLayout({
   tabs,

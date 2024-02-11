@@ -1,11 +1,12 @@
 import { cn } from "~/lib/utils";
+
 import { MaxWidthWrapper } from "./max-width-wrapper";
 
-type PageContentProps = {
+interface PageContentProps {
   className?: string;
   children?: React.ReactNode;
   withGutter?: boolean;
-};
+}
 
 export const PageContent = ({
   className,

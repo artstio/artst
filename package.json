@@ -13,6 +13,7 @@
     "start": "cross-env NODE_ENV=production node ./build/server.js --require dotenv/config",
     "format": "prettier --write .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "setup": "npx prisma db push",
     "typecheck": "tsc",
     "validate": "run-p lint typecheck"

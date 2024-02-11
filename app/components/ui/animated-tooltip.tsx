@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   motion,
   useTransform,
@@ -6,6 +5,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
+import { useState } from "react";
 
 export const AnimatedTooltip = ({
   items,
@@ -45,8 +45,7 @@ export const AnimatedTooltip = ({
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence mode="wait">
-            {hoveredIndex === item.id && (
-              <motion.div
+            {hoveredIndex === item.id ? <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.6 }}
                 animate={{
                   opacity: 1,
@@ -72,8 +71,7 @@ export const AnimatedTooltip = ({
                   {item.name}
                 </div>
                 <div className="text-white text-xs">{item.designation}</div>
-              </motion.div>
-            )}
+              </motion.div> : null}
           </AnimatePresence>
           <img
             onMouseMove={handleMouseMove}

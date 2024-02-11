@@ -1,5 +1,6 @@
 import { NavLink } from "@remix-run/react";
 import { ReactNode } from "react";
+
 import { cn } from "~/lib/utils";
 
 export default function SettingsNavLink({

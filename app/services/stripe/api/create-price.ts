@@ -1,7 +1,8 @@
-import type { Stripe } from "stripe";
 import type { Plan, Price } from "@prisma/client";
-import type { Interval } from "~/services/stripe/plans";
+import type { Stripe } from "stripe";
+
 import { stripe } from "~/services/stripe/config.server";
+import type { Interval } from "~/services/stripe/plans";
 
 export async function createStripePrice(
   id: Plan["id"],
