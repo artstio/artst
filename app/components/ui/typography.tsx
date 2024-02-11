@@ -38,7 +38,7 @@ const typographyVariants = cva(["tracking-tight"], {
       h2: "text-2xl font-semibold",
       h3: "text-xl font-semibold",
       h4: "text-lg font-semibold",
-      p: "text-base",
+      p: "text-primary",
       span: "text-sm",
     },
   },

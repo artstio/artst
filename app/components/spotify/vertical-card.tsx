@@ -29,7 +29,7 @@ export const VerticalCard = ({
   return (
     <AlbumLink>
       <div className="" itemType="http://schema.org/MusicAlbum">
-        <div className="group flex-1 p-5 bg-neutral-800/30 hover:bg-neutral-800/50 rounded-md space-y-5 transition-all">
+        <div className="group flex-1 p-5 bg-card hover:bg-card-hover rounded-md space-y-5 transition-all">
           <div className="">
             <img
               src={image.url}
