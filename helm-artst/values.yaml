@@ -1,0 +1,12 @@
+appName: artst
+
+port: 80
+
+configmap:
+  name: artst-configmap-v1
+  data:
+    CUSTOM_HEADER: "This app was deployed with helm!"
+
+image:
+  name: artstio/artst
+  tag: latest
