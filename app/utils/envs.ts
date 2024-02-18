@@ -36,6 +36,10 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV: "development" | "production" | "test";
+
+      K8S_SERVER_PORT: string;
+      K8S_PROBES_PORT: string;
+
       SESSION_SECRET: string;
       ENCRYPTION_SECRET: string;
       DATABASE_URL: string;

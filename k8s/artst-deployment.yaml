@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: artst
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: artst
+  template:
+    metadata:
+      labels:
+        app: artst
+    spec:
+      containers:
+        - name: artst
+          image: artst
+          args:
+            - npm
+            - start
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000

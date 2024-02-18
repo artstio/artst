@@ -1,8 +1,15 @@
 # base node image
 FROM node:18-bullseye-slim as base
+LABEL maintainer="Artst <burak@okbrk.com>"
+LABEL description="Runs the Artst app"
 
 # set for base and all layer that inherit from it
 ENV NODE_ENV production
+ENV K8S_SERVER_PORT=80
+ENV K8S_PROBES_PORT=9000
+
+EXPOSE ${K8S_SERVER_PORT}
+EXPOSE ${K8S_PROBES_PORT}
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl

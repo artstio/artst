@@ -8,6 +8,7 @@ import { broadcastDevReady, installGlobals } from "@remix-run/node";
 import compression from "compression";
 import type { RequestHandler } from "express";
 import express from "express";
+import { createLightship } from "lightship";
 import morgan from "morgan";
 import sourceMapSupport from "source-map-support";
 
@@ -99,9 +100,14 @@ async function run() {
 
   app.all("*", remixHandler);
 
-  const port = process.env.PORT || 3000;
+  const lightship = await createLightship({
+    port: +process.env.K8S_PROBES_PORT,
+  });
+
+  const port = process.env.K8S_SERVER_PORT || 3000;
   app.listen(port, () => {
     console.log(`✅ app ready: http://localhost:${port}`);
+    lightship.signalReady();
 
     if (process.env.NODE_ENV === "development") {
       broadcastDevReady(initialBuild);
