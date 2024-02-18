@@ -1,12 +1,11 @@
 import type { User } from "@prisma/client";
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { redirect, json } from "@remix-run/node";
-import { useLoaderData, Outlet } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { Outlet, useLoaderData } from "@remix-run/react";
 
 import { Footer } from "~/components/footer";
 import { Navigation } from "~/components/navigation";
 import { authenticator } from "~/services/auth/config.server";
-
 
 interface LoaderData {
   user: User | null;

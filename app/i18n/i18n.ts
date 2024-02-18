@@ -2,7 +2,7 @@ import type { InitOptions } from "i18next";
 
 export const i18nConfig = {
   // Supported languages.
-  supportedLngs: ["en", "es", "de", "ja", "zh"],
+  supportedLngs: ["en", "tr"],
   // Fallback language.
   fallbackLng: "en",
   // Default namespace.

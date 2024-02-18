@@ -2,6 +2,7 @@ import { DiscIcon } from "@radix-ui/react-icons";
 import { LinksFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 
+import type { MaybeJsonified } from "~/utils/types";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import {
@@ -12,19 +13,15 @@ import {
 } from "~/components/ui/tooltip";
 import { Typography } from "~/components/ui/typography";
 import { cn } from "~/lib/utils";
-import {
+import type {
+  AlbumAggregateData,
   AlbumAggregateProps,
-  type AlbumAggregateData,
 } from "~/models/spotify/album";
-import { TrackAggregateProps } from "~/models/spotify/track";
+import type { TrackAggregateProps } from "~/models/spotify/track";
 import { formatDuration, isEp } from "~/models/spotify/utils";
-import { MaybeJsonified } from "~/utils/types";
-
 import { Section } from "../section";
 import { Separator } from "../ui/separator";
-
 import { TrackList } from "./track-list";
-
 
 // type ArtistAlbumCardProps = React.ComponentProps<typeof Card>;
 
@@ -153,13 +150,15 @@ export function ArtistAlbumCard(props: AlbumCardProps) {
     <Card className={cn("", className)} {...rest}>
       <CardContent className="grid grid-cols-[auto,1fr] gap-4 md:gap-8">
         <div>
-          {largestImage ? <img
+          {largestImage ? (
+            <img
               src={largestImage.url}
               width={largestImage.width}
               height={largestImage.height}
               alt={`${name} Album Cover`}
-              className="object-cover h-40 w-40 bg-neutral-900"
-            /> : null}
+              className="h-40 w-40 bg-neutral-900 object-cover"
+            />
+          ) : null}
         </div>
         <div className="space-y-2">
           <div className="flex flex-col">
@@ -236,7 +235,7 @@ function PopularityBadge({ popularity = 0 }: { popularity?: number | null }) {
 
 export function AlbumTrackListItem({ track }: { track: TrackAggregateProps }) {
   return (
-    <div className="flex p-3 items-center justify-between">
+    <div className="flex items-center justify-between p-3">
       <div className="flex items-center gap-4">
         <div>
           <Typography variant="muted" size="sm">
@@ -260,15 +259,17 @@ export function AlbumTrackList({ album }: { album: AlbumAggregateProps }) {
     <>
       <div className="space-y-4">
         <div className="flex items-center gap-4">
-          {image ? <Link to={`/album/${album.id}`}>
+          {image ? (
+            <Link to={`/album/${album.id}`}>
               <img
                 src={image.url}
                 width={40}
                 height={40}
                 alt={`${album.name} Album Cover`}
-                className="object-cover h-24 w-24 bg-neutral-900"
+                className="h-24 w-24 bg-neutral-900 object-cover"
               />
-            </Link> : null}
+            </Link>
+          ) : null}
           <Link to={`/album/${album.id}`} className="flex flex-col gap-2">
             <Typography variant="h2" className="font-bold">
               {album.name}

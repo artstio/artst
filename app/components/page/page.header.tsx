@@ -41,14 +41,18 @@ export function PageHeader({
             {badges ? badges : null}
           </div>
 
-          {subtitle ? <Typography variant="secondary">{subtitle}</Typography> : null}
-          {description ? <div>
+          {subtitle ? (
+            <Typography variant="secondary">{subtitle}</Typography>
+          ) : null}
+          {description ? (
+            <div>
               {/* <Balancer> */}
               <Typography variant="muted" className="mt-2" size="sm">
                 {description}
               </Typography>
               {/* </Balancer> */}
-            </div> : null}
+            </div>
+          ) : null}
         </div>
 
         {actions ? <div className="grow-0">{actions}</div> : null}

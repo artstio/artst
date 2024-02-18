@@ -1,4 +1,4 @@
-import type { User, Subscription } from "@prisma/client";
+import type { Subscription, User } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 

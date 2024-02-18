@@ -1,4 +1,4 @@
-import type { Prisma, Plan } from "@prisma/client";
+import type { Plan, Prisma } from "@prisma/client";
 
 import { db } from "~/utils/db.server";
 

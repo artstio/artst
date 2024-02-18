@@ -4,7 +4,7 @@ import { redirect } from "@remix-run/node";
 import { deleteUserById } from "~/models/user/delete-user";
 import { getUserById } from "~/models/user/get-user";
 import { authenticator } from "~/services/auth/config.server";
-import { getSession, destroySession } from "~/services/auth/session.server";
+import { destroySession, getSession } from "~/services/auth/session.server";
 import { deleteStripeCustomer } from "~/services/stripe/api/delete-customer";
 
 export async function loader({ request }: LoaderFunctionArgs) {

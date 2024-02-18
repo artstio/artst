@@ -1,5 +1,4 @@
 import { stripe } from "~/services/stripe/config.server";
-
 import type { PlanId } from "../plans";
 
 interface BillingPortalProducts {

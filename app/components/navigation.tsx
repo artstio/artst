@@ -1,7 +1,8 @@
 import type { User } from "@prisma/client";
-import { Link, Form, useLocation } from "@remix-run/react";
+import { Form, Link, useLocation } from "@remix-run/react";
 
 import { MaxWidthWrapper } from "./page/max-width-wrapper";
+import { Button } from "./ui/button";
 
 interface NavigationProps {
   user: User | null;
@@ -19,7 +20,7 @@ export function Navigation({ user }: NavigationProps) {
           prefetch="intent"
           className="flex flex-row items-center text-xl font-light text-gray-400 transition hover:text-gray-100 active:opacity-80"
         >
-          <span className="font-bold text-gray-200">Artst</span>&nbsp;io
+          <span className="font-bold text-gray-200">Artst</span>
           <div className="mx-1" />
           <small className="relative top-[2px] text-sm font-extrabold text-violet-200">
             beta
@@ -49,30 +50,36 @@ export function Navigation({ user }: NavigationProps) {
           </a>
 
           {!user &&
-            location &&
-            (location.pathname === "/" || location.pathname === "/plans") ? <>
-                <div className="mx-3" />
-                <Link
-                  to="/login"
-                  className="flex h-10 flex-row items-center rounded-xl border border-gray-600 px-4 font-bold text-gray-200
+          location &&
+          (location.pathname === "/" || location.pathname === "/plans") ? (
+            <>
+              <div className="mx-3" />
+              <Link
+                to="/login"
+                className="flex h-10 flex-row items-center rounded-xl border border-gray-600 px-4 font-bold text-gray-200
 					      transition hover:scale-105 hover:border-gray-200 hover:text-gray-100 active:opacity-80"
-                >
-                  Log In
-                </Link>
-              </> : null}
+              >
+                Log In
+              </Link>
+            </>
+          ) : null}
 
           {/* Log Out Form Button. */}
-          {user ? <>
+          {user ? (
+            <>
               <div className="mx-3" />
               <Form action="/auth/logout" method="post">
-                <button
-                  className="flex h-10 flex-row items-center rounded-xl border border-gray-600 px-4 font-bold text-gray-200
-					      transition hover:scale-105 hover:border-gray-200 hover:text-gray-100 active:opacity-80"
+                <Button
+                  variant="outline"
+                  className="transition"
+                  //   className="flex h-10 flex-row items-center rounded-xl border border-gray-600 px-4 font-bold text-gray-200
+                  // transition hover:scale-105 hover:border-gray-200 hover:text-gray-100 active:opacity-80"
                 >
                   Log Out
-                </button>
+                </Button>
               </Form>
-            </> : null}
+            </>
+          ) : null}
         </div>
       </header>
     </MaxWidthWrapper>

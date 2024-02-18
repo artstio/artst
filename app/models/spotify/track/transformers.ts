@@ -1,7 +1,7 @@
-import { Track, SimplifiedTrack } from "@spotify/web-api-ts-sdk";
+import type { SimplifiedTrack, Track } from "@spotify/web-api-ts-sdk";
 import slugify from "slugify";
 
-import { TrackCreateBody } from "./types";
+import type { TrackCreateBody } from "./types";
 
 export const createTrackInput = (track: Track): TrackCreateBody => {
   return {
@@ -35,6 +35,32 @@ export const createSimplifiedTrackInput = (
     apiHref: track.href,
     explicit: track.explicit,
     spotifyUrl: track.external_urls.spotify,
+    // spotifyArtists: {
+    //   connectOrCreate: track.artists.map((artist) => ({
+    //     where: {
+    //       id: artist.id,
+    //     },
+    //     create: {
+    //       id: artist.id,
+    //       name: artist.name,
+    //       slug: slugify(artist.name, { lower: true }),
+    //       apiHref: artist.href,
+    //       spotifyUrl: artist.external_urls.spotify,
+    //       popularity: 0,
+    //       followers: 0,
+    //       popularityHistory: {
+    //         create: {
+    //           popularity: 0,
+    //         },
+    //       },
+    //       followersHistory: {
+    //         create: {
+    //           followers: 0,
+    //         },
+    //       },
+    //     },
+    //   })),
+    // },
   };
 };
 

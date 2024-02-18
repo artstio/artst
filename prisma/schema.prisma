@@ -122,9 +122,9 @@ model SpotifyTrack {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  spotifyArtists SpotifyArtist[]
   spotifyAlbum   SpotifyAlbum    @relation(fields: [spotifyAlbumId], references: [id])
   spotifyAlbumId String
-  spotifyArtists SpotifyArtist[]
 
   @@index(spotifyAlbumId)
 }

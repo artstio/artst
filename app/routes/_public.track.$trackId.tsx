@@ -21,51 +21,56 @@ export const loader = async ({
   context: { visitorId },
   params,
 }: LoaderFunctionArgs) => {
-  const { albumId } = params;
-  if (!albumId) {
+  const { trackId } = params;
+  if (!trackId) {
     throw redirect("/artist");
   }
   try {
-    const album = await db.spotifyAlbum.findUnique({
-      where: { id: albumId },
+    const track = await db.spotifyTrack.findUnique({
+      where: { id: trackId },
       include: {
-        tracks: {
+        spotifyArtists: true,
+        spotifyAlbum: {
           include: {
-            spotifyArtists: true,
-          },
-        },
-        artists: {
-          include: {
+            tracks: {
+              include: {
+                spotifyArtists: true,
+              },
+            },
+            artists: {
+              include: {
+                images: true,
+              },
+            },
             images: true,
+            copyrights: true,
           },
         },
-        images: true,
-        copyrights: true,
       },
     });
 
     const phClient = PostHogClient();
 
-    if (album && typeof visitorId === "string" && visitorId.length > 0) {
+    if (track && typeof visitorId === "string" && visitorId.length > 0) {
       phClient.capture({
         distinctId: visitorId,
-        event: "album_viewed",
+        event: "track_viewed",
         properties: {
-          album: album.name,
+          album: track.name,
         },
       });
     }
 
-    return json({ album });
+    return json({ track });
   } catch (error) {
-    return json({ album: null }, { status: 500 });
+    return json({ track: null }, { status: 500 });
   }
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
     {
-      title: `${data?.album?.name} by ${data?.album?.artists[0]?.name} | Artst`,
+      title: `${data?.track?.name} by ${data?.track?.spotifyAlbum.artists[0].name} | Artst`,
     },
 
     // { name: 'description', content: '...' },
@@ -75,11 +80,11 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     // { tagName: 'link', rel: 'canonical', href: '...' },
 
     // and <script type=ld+json>
-    data?.album
+    data?.track?.spotifyAlbum
       ? {
           "script:ld+json": createMusicAlbumSD(
-            data.album.name,
-            createPersonSD(data.album.artists[0])
+            data.track.spotifyAlbum.name,
+            createPersonSD(data.track.spotifyAlbum.artists[0])
           ),
         }
       : {},
@@ -87,19 +92,19 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function ArtistPage() {
-  const { album } = useLoaderData<typeof loader>();
-  if (!album) {
+  const { track } = useLoaderData<typeof loader>();
+  if (!track) {
     return <div>Album not found</div>;
   }
 
-  const sortedTracks = album.tracks;
+  const sortedTracks = track;
 
-  const albumImage = getLargestImage(album.images);
+  const albumImage = getLargestImage(track.spotifyAlbum.images);
 
   const platformLinks = [
     {
       name: "Spotify",
-      url: album.spotifyUrl,
+      url: track.spotifyUrl,
     },
     // {
     // 	name: 'Apple Music',
@@ -132,7 +137,7 @@ export default function ArtistPage() {
             <div className="flex items-start justify-center dark:bg-transparent">
               <img
                 src={albumImage.url}
-                alt={`${album.name} cover`}
+                alt={`${track.name} cover`}
                 width={256}
                 height={256}
                 className="aspect-square w-full rounded-[4px] bg-neutral-950 shadow-md"
@@ -154,25 +159,21 @@ export default function ArtistPage() {
                   aria-label="Album name"
                   className="leading-tight"
                 >
-                  {album.name}
+                  {track.name}
                 </Typography>
                 <Typography
                   variant="h2"
                   aria-label="Album release date"
                   className="leading-tight"
                 >
-                  {getReleaseDate(album.releaseDate)}
+                  {getReleaseDate(track.spotifyAlbum.releaseDate)}
                 </Typography>
                 <Typography
                   variant="h2"
                   aria-label="Album duration"
                   className="leading-tight"
                 >
-                  {formatDuration(
-                    album.tracks.reduce((acc, track) => {
-                      return acc + track.durationMs;
-                    }, 0)
-                  )}
+                  {formatDuration(track.durationMs)}
                 </Typography>
               </div>
 
@@ -194,10 +195,12 @@ export default function ArtistPage() {
         </div>
 
         <Section title="Tracks">
-          <TrackList tracks={album.tracks} />
+          <TrackList tracks={track.spotifyAlbum.tracks} />
         </Section>
 
-        <Typography size="sm">{getReleaseDate(album.releaseDate)}</Typography>
+        <Typography size="sm">
+          {getReleaseDate(track.spotifyAlbum.releaseDate)}
+        </Typography>
       </PageContent>
     </>
   );

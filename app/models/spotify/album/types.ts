@@ -1,7 +1,7 @@
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
-import { db } from "~/utils/db.server";
-import { MaybeJsonified } from "~/utils/types";
+import type { db } from "~/utils/db.server";
+import type { MaybeJsonified } from "~/utils/types";
 
 export type AlbumCreateBody = Prisma.Args<
   typeof db.spotifyAlbum,

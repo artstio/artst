@@ -1,15 +1,12 @@
 import { Prisma } from "@prisma/client";
-import { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
+import type { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
 
-import { spotify } from "~/services/spotify";
 import { db } from "~/utils/db.server";
-
+import { spotify } from "~/services/spotify";
 import { createArtistInput } from "../artist";
 import { createSimplifiedTrackInput } from "../track";
-
-import { createAlbumInput } from "./transformers";
-import { AlbumCreateBody } from "./types";
-
+import { createAlbumInput, updateAlbumInput } from "./transformers";
+import type { AlbumCreateBody } from "./types";
 
 export async function getAlbum(id: string) {
   return spotify.albums.get(id);
@@ -133,9 +130,10 @@ export async function getCachedArtistAlbums(artistId: string) {
       },
     }),
   ]);
-  const shouldUpdate = !albums.every(
-    (album) => album.artists && album.artists?.length > 0
-  );
+  const shouldUpdate =
+    spotifyAlbums.items.length !== albums.length ||
+    !albums.every((album) => album.artists && album.artists?.length > 0);
+
   if (!shouldUpdate) {
     return albums;
   }
@@ -157,31 +155,69 @@ const createSpotifyAlbum =
     });
     if (existingAlbum) {
       // TODO: update album
-      return null;
+      return existingAlbum;
     }
 
     const [createdAlbum, { items: spotifyTracks }] = await Promise.all([
-      tx.spotifyAlbum.create({
-        data: createAlbumInput(spotifyAlbum),
+      tx.spotifyAlbum.upsert({
+        where: {
+          id: album.id,
+        },
+        update: updateAlbumInput(spotifyAlbum),
+        create: createAlbumInput(spotifyAlbum),
       }),
       spotify.albums.tracks(album.id),
     ]);
 
-    const albumTracks = tx.spotifyTrack.createMany({
-      data: spotifyTracks.map((track) => ({
-        ...createSimplifiedTrackInput(track),
-        spotifyAlbumId: createdAlbum.id,
-        spotifyArtists: {
-          connect: track.artists.map((artist) => ({
-            id: artist.id,
-          })),
-        },
-      })),
-    });
+    if (spotifyTracks.length) {
+      console.log(`found ${spotifyTracks.length} tracks for album ${album.id}`);
+      console.log({ createdAlbum, spotifyTracks });
+      const albumTracks = await tx.spotifyTrack.createMany({
+        skipDuplicates: true,
+        data: spotifyTracks.map((track) => ({
+          ...createSimplifiedTrackInput(track),
+          spotifyAlbumId: album.id,
+        })),
+      });
 
-    const [newAlbum] = await Promise.all([createdAlbum, albumTracks]);
+      if (albumTracks.count) {
+        await Promise.all(
+          spotifyTracks.map((track) => {
+            return track.artists.map((artist) => {
+              return tx.spotifyTrack.update({
+                where: {
+                  id: track.id,
+                },
+                data: {
+                  spotifyArtists: {
+                    connectOrCreate: track.artists.map((artist) => ({
+                      where: {
+                        id: artist.id,
+                      },
+                      create: {
+                        ...createArtistInput({
+                          ...artist,
+                          genres: [],
+                          followers: { total: 0, href: "" },
+                          images: [],
+                          popularity: 0,
+                        }),
+                      },
+                    })),
+                  },
+                },
+              });
+            });
+          })
+        );
 
-    return newAlbum;
+        console.log(
+          `created ${albumTracks.count} tracks for album ${album.id}`
+        );
+      }
+    }
+
+    return createdAlbum;
   };
 
 const updateSpotifyAlbum =
@@ -202,7 +238,7 @@ const updateSpotifyAlbum =
       },
     });
     if (!existingAlbum) {
-      return album;
+      return createSpotifyAlbum(spotifyAlbum)(tx);
     }
 
     const artistsToConnect = spotifyAlbum.artists.filter((artist) => {

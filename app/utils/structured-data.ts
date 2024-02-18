@@ -1,4 +1,4 @@
-import type { Person, MusicAlbum } from "schema-dts";
+import type { MusicAlbum, Person } from "schema-dts";
 import slugify from "slugify";
 
 interface PersonInput {
@@ -13,11 +13,12 @@ export const createPersonSD = ({ id, name, email }: PersonInput): Person => {
     identifier: id,
     name,
     email,
-    url: `${
-      global.ENV?.BASE_URL || "http://localhost:3000"
-    }/artists/${slugify(name, {
-      lower: true,
-    })}`,
+    url: `${global.ENV?.BASE_URL || "http://localhost:3000"}/artists/${slugify(
+      name,
+      {
+        lower: true,
+      }
+    )}`,
   };
 };
 
@@ -31,10 +32,11 @@ export const createMusicAlbumSD = (
 
     // video // TODO: Add video
     byArtist: artist,
-    url: `${
-      global.ENV?.BASE_URL || "http://localhost:3000"
-    }/albums/${slugify(name, {
-      lower: true,
-    })}`,
+    url: `${global.ENV?.BASE_URL || "http://localhost:3000"}/albums/${slugify(
+      name,
+      {
+        lower: true,
+      }
+    )}`,
   };
 };

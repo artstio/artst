@@ -1,11 +1,9 @@
 import { resolve } from "node:path";
-
 import { createCookie } from "@remix-run/node";
 import Backend from "i18next-fs-backend";
 import { RemixI18Next } from "remix-i18next";
 
 import { i18nConfig } from "./i18n";
-
 
 export const i18nCookie = createCookie("_i18n", {
   path: "/",

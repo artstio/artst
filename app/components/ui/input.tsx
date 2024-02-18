@@ -1,11 +1,10 @@
 import * as React from "react";
 
 import { cn } from "~/lib/utils";
-
 import { ErrorMessage } from "./error-message";
 import { Label } from "./label";
 
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
@@ -31,7 +30,9 @@ const InputWithLabel = React.forwardRef<
   return (
     <div className="grid w-full items-center gap-2">
       <Label htmlFor={props.id}>{label}</Label>
-      {description ? <p className="text-muted-foreground text-sm">{description}</p> : null}
+      {description ? (
+        <p className="text-sm text-muted-foreground">{description}</p>
+      ) : null}
       <Input
         {...props}
         ref={ref}

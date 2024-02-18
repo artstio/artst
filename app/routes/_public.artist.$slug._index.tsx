@@ -1,52 +1,41 @@
-import {
-  LoaderFunctionArgs,
-  MetaFunction,
-  json,
-  redirect,
-} from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+import { db } from "~/utils/db.server";
+import { createPersonSD } from "~/utils/structured-data";
 import { Navigation } from "~/components/navigation-test";
 import { PageContent } from "~/components/page";
 import { Section } from "~/components/section";
 import { ArtistHeroHeader } from "~/components/spotify/artist/hero";
 import { ListenPlatformLinks } from "~/components/spotify/platform-links";
 import { VerticalCard } from "~/components/spotify/vertical-card";
+import { getCachedArtist } from "~/models/spotify/artist";
 import {
   getAlbumTypeText,
   getLargestImage,
   isRecentRelease,
 } from "~/models/spotify/utils";
-import { db } from "~/utils/db.server";
-import { createPersonSD } from "~/utils/structured-data";
+import { authenticator } from "~/services/auth/config.server";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const { slug } = params;
   if (!slug) {
     throw redirect("/artist");
   }
+  const user = await authenticator.isAuthenticated(request);
   try {
-    const artist = await db.spotifyArtist.findUnique({
-      where: { slug },
-      include: {
-        images: true,
-        spotifyAlbum: {
-          take: 5,
-          orderBy: {
-            popularity: "desc",
-          },
-          include: {
-            tracks: true,
-            artists: true,
-            images: true,
-          },
-        },
-      },
-    });
+    const artist = await getCachedArtist({ slug });
+    if (!artist) {
+      throw new Error(
+        JSON.stringify({ meesage: "Artist not found", status: 404 })
+      );
+    }
 
-    return json({ artist });
-  } catch (error) {
-    return json({ artist: null }, { status: 500 });
+    return json({ user, artist });
+  } catch (error: unknown) {
+    const parsed = typeof error === "string" ? JSON.parse(error) : error;
+    return json({ user, artist: null }, { status: parsed?.status || 500 });
   }
 };
 
@@ -70,9 +59,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 };
 
 export default function ArtistPage() {
-  const { artist } = useLoaderData<typeof loader>();
-  console.log({ artist });
-  if (!artist) {
+  const { user, artist } = useLoaderData<typeof loader>();
+  if (!artist || artist === null) {
     return <div>Artist not found</div>;
   }
 
@@ -97,11 +85,11 @@ export default function ArtistPage() {
 
   return (
     <div>
-      <Navigation user={null} />
+      <Navigation user={user} />
 
       <ArtistHeroHeader artist={artist} />
 
-      <PageContent className="space-y-6 md:space-y-12 mt-[calc(25vh_-_2rem)] md:mt-[calc(30vh_-_2rem)]">
+      <PageContent className="mt-[calc(25vh_-_2rem)] space-y-6 md:mt-[calc(30vh_-_2rem)] md:space-y-12">
         <ListenPlatformLinks platforms={platformLinks} />
 
         <Section
@@ -111,24 +99,28 @@ export default function ArtistPage() {
             text: "See All",
           }}
         >
-          <div className="overflow-x-auto snap-x">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 snap-x-mandatory overflow-x-auto snap-type-mandatory snap-mandatory snap-align-start">
-              {artist.spotifyAlbum.length > 0 ? artist.spotifyAlbum.map((album, index) => (
-                  <VerticalCard
-                    key={`${album.id}-vertical-card`}
-                    name={album.name}
-                    subtexts={[
-                      index === 0 && isRecentRelease(album.releaseDate)
-                        ? "Latest Release"
-                        : new Date(album.releaseDate).getFullYear().toString(),
-                      getAlbumTypeText(album),
-                    ]}
-                    image={getLargestImage(album.images) || album.images[0]}
-                    linkProps={{
-                      to: `/album/${album.id}`,
-                    }}
-                  />
-                )) : null}
+          <div className="snap-x overflow-x-auto">
+            <div className="snap-x-mandatory snap-type-mandatory snap-align-start grid snap-mandatory grid-cols-2 gap-3 overflow-x-auto sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+              {artist.spotifyAlbum.length > 0
+                ? artist.spotifyAlbum.map((album, index) => (
+                    <VerticalCard
+                      key={`${album.id}-vertical-card`}
+                      name={album.name}
+                      subtexts={[
+                        index === 0 && isRecentRelease(album.releaseDate)
+                          ? "Latest Release"
+                          : new Date(album.releaseDate)
+                              .getFullYear()
+                              .toString(),
+                        getAlbumTypeText(album),
+                      ]}
+                      image={getLargestImage(album.images) || album.images[0]}
+                      linkProps={{
+                        to: `/album/${album.id}`,
+                      }}
+                    />
+                  ))
+                : null}
             </div>
           </div>
         </Section>

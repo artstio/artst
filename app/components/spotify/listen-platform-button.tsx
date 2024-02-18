@@ -1,9 +1,9 @@
-import { Link } from "@remix-run/react";
 import { useMemo } from "react";
+import { Link } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
 
 import { Icons } from "~/components/shared/icons";
-
+import { cn } from "~/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
 
 export const ListenPlatformButton = ({
@@ -24,20 +24,21 @@ export const ListenPlatformButton = ({
       default:
         return Icons.SpotifyFill;
     }
-  }, []);
+  }, [name]);
 
   const { t } = useTranslation("common");
 
   return (
-    <Button asChild variant="ghost" size="sm" className="rounded-full">
-      <Link
-        to={url}
-        className="flex gap-2 items-center"
-        aria-label={t("platform.listenOnAriaLabel", { platform: name })} // TODO: Add aria-label
-      >
-        <Icon size={18} />
-        {t("platform.listenOn", { platform: name })}
-      </Link>
-    </Button>
+    <Link
+      to={url}
+      className={cn(
+        buttonVariants({ variant: "ghost", size: "sm" }),
+        "gap-2 rounded-full pe-3 ps-2"
+      )}
+      aria-label={t("platform.listenOnAriaLabel", { platform: name })} // TODO: Add aria-label
+    >
+      <Icon size={18} />
+      {t("platform.listenOn", { platform: name })}
+    </Link>
   );
 };

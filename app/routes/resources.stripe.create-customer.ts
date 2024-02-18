@@ -1,7 +1,6 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-
 import { getUserById } from "~/models/user/get-user";
 import { updateUserById } from "~/models/user/update-user";
 import { authenticator } from "~/services/auth/config.server";

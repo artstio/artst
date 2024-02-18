@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 
-import { stripe } from "~/services/stripe/config.server";
 import { HOST_URL } from "~/utils/http";
+import { stripe } from "~/services/stripe/config.server";
 
 export async function createStripeCustomerPortalSession(
   customerId: User["customerId"]

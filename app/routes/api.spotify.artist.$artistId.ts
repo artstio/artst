@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 
 import { getCachedArtist } from "~/models/spotify/artist/handlers";
 import { authenticator } from "~/services/auth/config.server";
@@ -11,7 +12,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     return json(null, { status: 404 });
   }
 
-  const cachedArtist = await getCachedArtist(artistId);
+  const cachedArtist = await getCachedArtist({ id: artistId });
 
   return json(
     { artist: cachedArtist },

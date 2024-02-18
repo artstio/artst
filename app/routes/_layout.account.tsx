@@ -1,14 +1,14 @@
-import type { User, Subscription } from "@prisma/client";
+import type { Subscription, User } from "@prisma/client";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Link, useLoaderData } from "@remix-run/react";
 
+import { formatUnixDate } from "~/utils/date";
 import { CustomerPortalButton } from "~/components/stripe/customer-portal-button";
 import { getSubscriptionByUserId } from "~/models/subscription/get-subscription";
 import { getUserById } from "~/models/user/get-user";
 import { authenticator } from "~/services/auth/config.server";
 import { PlanId, PRICING_PLANS } from "~/services/stripe/plans";
-import { formatUnixDate } from "~/utils/date";
 
 interface LoaderData {
   user: User;
@@ -104,21 +104,27 @@ export default function Account() {
         <div className="flex h-full w-full flex-col items-center">
           {/* Images. */}
           <div className="flex flex-col items-center">
-            {subscription.planId === PlanId.FREE ? <img
+            {subscription.planId === PlanId.FREE ? (
+              <img
                 src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/star_1.png"
                 alt=""
                 className="h-36 w-36 select-none transition hover:scale-105 hover:brightness-110"
-              /> : null}
-            {subscription.planId === PlanId.STARTER ? <img
+              />
+            ) : null}
+            {subscription.planId === PlanId.STARTER ? (
+              <img
                 src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/star_1.png"
                 alt=""
                 className="h-36 w-36 select-none hue-rotate-60 transition hover:scale-105 hover:brightness-110"
-              /> : null}
-            {subscription.planId === PlanId.PRO ? <img
+              />
+            ) : null}
+            {subscription.planId === PlanId.PRO ? (
+              <img
                 src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/star_2.png"
                 alt=""
                 className="h-36 w-36 select-none hue-rotate-[200deg] transition hover:scale-105 hover:brightness-110"
-              /> : null}
+              />
+            ) : null}
           </div>
           <div className="my-3" />
 
@@ -131,17 +137,24 @@ export default function Account() {
             </h5>
 
             <span className="text-center text-lg font-semibold text-gray-400">
-              {subscription.planId === PlanId.FREE ? PRICING_PLANS[PlanId.FREE].description : null}
+              {subscription.planId === PlanId.FREE
+                ? PRICING_PLANS[PlanId.FREE].description
+                : null}
 
-              {subscription.planId === PlanId.STARTER ? PRICING_PLANS[PlanId.STARTER].description : null}
+              {subscription.planId === PlanId.STARTER
+                ? PRICING_PLANS[PlanId.STARTER].description
+                : null}
 
-              {subscription.planId === PlanId.PRO ? PRICING_PLANS[PlanId.PRO].description : null}
+              {subscription.planId === PlanId.PRO
+                ? PRICING_PLANS[PlanId.PRO].description
+                : null}
             </span>
           </div>
           <div className="my-3" />
 
           {/* Plans Link. */}
-          {subscription.planId === PlanId.FREE ? <>
+          {subscription.planId === PlanId.FREE ? (
+            <>
               <Link
                 to="/plans"
                 prefetch="intent"
@@ -151,7 +164,8 @@ export default function Account() {
                 <button>Subscribe</button>
               </Link>
               <div className="my-1" />
-            </> : null}
+            </>
+          ) : null}
 
           {/* Customer Portal. */}
           {user.customerId ? <CustomerPortalButton /> : null}
@@ -169,7 +183,9 @@ export default function Account() {
                 )}{" "}
                 on:{" "}
                 <span className="text-gray-200">
-                  {subscription ? formatUnixDate(subscription.currentPeriodEnd) : null}
+                  {subscription
+                    ? formatUnixDate(subscription.currentPeriodEnd)
+                    : null}
                 </span>
               </p>
             </div>

@@ -1,20 +1,33 @@
 import { Artist } from "@spotify/web-api-ts-sdk";
 
-import { spotify } from "~/services/spotify";
 import { db } from "~/utils/db.server";
-
-import { createArtistInput } from "./transformers";
-import { ArtistCreateBody, ArtistUpdateBody, PrismaArtist } from "./types";
+import { spotify } from "~/services/spotify";
+import { createArtistInput, updateArtistInput } from "./transformers";
+import type {
+  ArtistAggregateData,
+  ArtistCreateBody,
+  ArtistUpdateBody,
+} from "./types";
 
 export async function getArtist(id: string) {
   return spotify.artists.get(id);
 }
 
-export async function getArtistFromDb(id: string) {
+export async function getArtistFromDb(input: GetCachedArtist) {
   try {
     return await db.spotifyArtist.findFirst({
       where: {
-        id,
+        ...(input.id ? { id: input.id } : { slug: input.slug }),
+      },
+      include: {
+        spotifyAlbum: {
+          take: 10,
+          orderBy: {
+            releaseDate: "desc",
+          },
+          include: { images: true },
+        },
+        images: true,
       },
     });
   } catch (error) {
@@ -25,19 +38,45 @@ export async function getArtistFromDb(id: string) {
   }
 }
 
-export async function getCachedArtist(id: string) {
-  const artist = await getArtistFromDb(id);
-  if (artist) {
+type GetCachedArtist =
+  | {
+      id: string;
+      slug?: never;
+    }
+  | {
+      slug: string;
+      id?: never;
+    };
+
+export async function getCachedArtist(
+  input: GetCachedArtist
+): Promise<ArtistAggregateData | undefined> {
+  const artist = await getArtistFromDb(input);
+  if (
+    artist?.id &&
+    artist.updatedAt > new Date(Date.now() - 1000 * 60 * 60 * 24)
+  ) {
     return artist;
   }
 
-  const spotifyArtist = await getArtist(id);
-  if (spotifyArtist) {
+  const inputId = artist?.id || input.id;
+  if (!inputId) {
+    throw new Error(
+      JSON.stringify({ message: "Artist not found", status: 404 })
+    );
+  }
+  const spotifyArtist = await getArtist(inputId);
+  if (spotifyArtist && !artist) {
     const body = createArtistInput(spotifyArtist);
     return createArtist(body);
   }
 
-  return null;
+  if (spotifyArtist && artist) {
+    const body = updateArtistInput(spotifyArtist, artist);
+    return updateArtist(artist.id, body);
+  }
+
+  return;
 }
 
 export async function searchArtist(query: string) {
@@ -47,6 +86,14 @@ export async function searchArtist(query: string) {
 export async function createArtist(body: ArtistCreateBody) {
   return db.spotifyArtist.create({
     data: body,
+    include: {
+      images: true,
+      spotifyAlbum: {
+        include: {
+          images: true,
+        },
+      },
+    },
   });
 }
 
@@ -56,5 +103,13 @@ export async function updateArtist(id: string, body: ArtistUpdateBody) {
       id,
     },
     data: body,
+    include: {
+      images: true,
+      spotifyAlbum: {
+        include: {
+          images: true,
+        },
+      },
+    },
   });
 }

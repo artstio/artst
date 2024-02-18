@@ -1,5 +1,5 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
-import { redirect, json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 
 import { getUserById } from "~/models/user/get-user";
 import { authenticator } from "~/services/auth/config.server";

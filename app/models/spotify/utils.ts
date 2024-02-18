@@ -1,4 +1,4 @@
-import { ImageProps } from "./image/types";
+import type { ImageProps } from "./image/types";
 
 export function getSmallestImage(images?: ImageProps[]) {
   if (!images || !images.length) {

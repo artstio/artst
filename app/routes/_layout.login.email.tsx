@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 
 import { authenticator } from "~/services/auth/config.server";
-import { getSession, commitSession } from "~/services/auth/session.server";
+import { commitSession, getSession } from "~/services/auth/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userSession = await authenticator.isAuthenticated(request, {
@@ -70,13 +70,16 @@ export default function Login() {
       </div>
 
       {/* Error messages. */}
-      {error ? <>
+      {error ? (
+        <>
           <strong className="text-center text-red-500">{error.message}</strong>
           <div className="my-3" />
-        </> : null}
+        </>
+      ) : null}
 
       {/* Email Form. */}
-      {!user && !hasSentEmail ? <>
+      {!user && !hasSentEmail ? (
+        <>
           <Form method="post" autoComplete="off" className="w-full">
             <fieldset>
               <label className="font-semibold text-gray-200">
@@ -109,10 +112,12 @@ export default function Login() {
               <span>Send Code</span>
             </button>
           </Form>
-        </> : null}
+        </>
+      ) : null}
 
       {/* Verify Code Form. */}
-      {hasSentEmail ? <div className="flex flex-col items-center">
+      {hasSentEmail ? (
+        <div className="flex flex-col items-center">
           <Form method="post" autoComplete="off" className="w-full">
             <fieldset>
               <label className="font-semibold text-gray-200">
@@ -160,7 +165,8 @@ export default function Login() {
               <span>Request new Code</span>
             </button>
           </Form>
-        </div> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

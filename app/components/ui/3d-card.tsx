@@ -1,9 +1,9 @@
 import React, {
   createContext,
-  useState,
   useContext,
-  useRef,
   useEffect,
+  useRef,
+  useState,
 } from "react";
 
 import { cn } from "~/lib/utils";
@@ -47,7 +47,7 @@ export const CardContainer = ({
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-20 flex items-center justify-center",
+          "flex items-center justify-center py-20",
           containerClassName
         )}
         style={{
@@ -60,7 +60,7 @@ export const CardContainer = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className={cn(
-            "flex items-center justify-center relative transition-all duration-200 ease-linear",
+            "relative flex items-center justify-center transition-all duration-200 ease-linear",
             className
           )}
           style={{
@@ -120,7 +120,7 @@ export const CardItem = ({
 
   useEffect(() => {
     handleAnimations();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMouseEntered]);
 
   const handleAnimations = () => {

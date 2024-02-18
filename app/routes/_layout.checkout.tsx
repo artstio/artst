@@ -1,12 +1,12 @@
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { redirect, json } from "@remix-run/node";
-import { Link, useLoaderData, useSubmit } from "@remix-run/react";
 import { useState } from "react";
+import type { LoaderFunctionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Link, useLoaderData, useSubmit } from "@remix-run/react";
 
+import { useInterval } from "~/utils/hooks";
 import { getSubscriptionByUserId } from "~/models/subscription/get-subscription";
 import { authenticator } from "~/services/auth/config.server";
 import { PlanId } from "~/services/stripe/plans";
-import { useInterval } from "~/utils/hooks";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await authenticator.isAuthenticated(request, {
@@ -39,7 +39,8 @@ export default function Checkout() {
   return (
     <div className="m-auto flex h-full max-w-md flex-col items-center justify-center px-6">
       {/* Pending Message. */}
-      {pending && retries < 3 ? <>
+      {pending && retries < 3 ? (
+        <>
           <svg
             className="h-28 w-28 animate-spin fill-gray-400 hover:fill-violet-200"
             xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +57,12 @@ export default function Checkout() {
           <p className="max-w-sm text-center font-semibold text-gray-400">
             This will take a few seconds.
           </p>
-        </> : null}
+        </>
+      ) : null}
 
       {/* Success Message. */}
-      {!pending ? <>
+      {!pending ? (
+        <>
           <img
             src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/hundred.png"
             alt=""
@@ -84,10 +87,12 @@ export default function Checkout() {
           >
             Continue to Account
           </Link>
-        </> : null}
+        </>
+      ) : null}
 
       {/* Error Message. */}
-      {pending && retries === 3 ? <>
+      {pending && retries === 3 ? (
+        <>
           <img
             src="https://raw.githubusercontent.com/dev-xo/dev-xo/main/assets/images/melt.png"
             alt=""
@@ -111,7 +116,8 @@ export default function Checkout() {
           >
             Continue to Account
           </Link>
-        </> : null}
+        </>
+      ) : null}
     </div>
   );
 }

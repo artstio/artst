@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
 
-
+import { getDefaultCurrency } from "~/utils/locales";
 import { getPlanById } from "~/models/plan/get-plan";
 import { createSubscription } from "~/models/subscription/create-subscription";
 import { getSubscriptionByUserId } from "~/models/subscription/get-subscription";
@@ -9,7 +9,6 @@ import { getUserById } from "~/models/user/get-user";
 import { authenticator } from "~/services/auth/config.server";
 import { createStripeSubscription } from "~/services/stripe/api/create-subscription";
 import { PlanId } from "~/services/stripe/plans";
-import { getDefaultCurrency } from "~/utils/locales";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await authenticator.isAuthenticated(request, {

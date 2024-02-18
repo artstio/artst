@@ -1,4 +1,5 @@
 import { SpotifyFill } from "akar-icons";
+import type { LucideIcon, LucideProps } from "lucide-react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -12,7 +13,6 @@ import {
   Image,
   Laptop,
   Loader2,
-  LucideProps,
   Moon,
   MoreVertical,
   Plus,
@@ -23,7 +23,6 @@ import {
   Trash,
   User,
   X,
-  LucideIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;

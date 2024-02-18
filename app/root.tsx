@@ -1,12 +1,12 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 import {
+  json,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  json,
   useLoaderData,
 } from "@remix-run/react";
 import clsx from "clsx";
@@ -17,7 +17,6 @@ import { ExposeAppConfig } from "~/components/expose-app-config";
 import { Posthog } from "~/components/posthog";
 import { createUserSession } from "~/services/auth/session.server";
 import stylesheet from "~/tailwind.css";
-
 import { useChangeLanguage } from "./hooks/use-change-language";
 import {
   ClientHintCheck,
@@ -26,6 +25,7 @@ import {
   useTheme,
 } from "./lib/client-hints";
 import { getTheme } from "./lib/theme.server";
+
 // import { remixI18Next } from "~/i18n";
 
 // import { useTranslation } from "react-i18next";
@@ -86,10 +86,7 @@ export default function App() {
   // useChangeLanguage(locale);
 
   return (
-    <html
-      lang={'en'}
-      className={clsx(theme)}
-    >
+    <html lang={"en"} className={clsx(theme)}>
       <Posthog
         apiKey={appConfig.posthogToken}
         apiUrl={appConfig.posthogApi}

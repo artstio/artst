@@ -1,9 +1,8 @@
-import { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
+import type { Album, SimplifiedAlbum } from "@spotify/web-api-ts-sdk";
 import slugify from "slugify";
 
 import { extractImageId } from "../image/utils";
-
-import { AlbumCreateBody } from "./types";
+import type { AlbumCreateBody, AlbumUpdateBody } from "./types";
 
 export const createAlbumInput = (album: Album): AlbumCreateBody => {
   return {
@@ -139,6 +138,76 @@ export const createSimplifiedAlbumInput = (
     ...(album.external_ids?.upc && { upc: album.external_ids.upc }),
     ...(album.external_ids?.ean && { ean: album.external_ids.ean }),
     ...(album.external_ids?.isrc && { isrc: album.external_ids.isrc }),
+  };
+};
+
+export const updateAlbumInput = (album: Album): AlbumUpdateBody => {
+  return {
+    ...(album.external_ids?.upc && { upc: album.external_ids.upc }),
+    ...(album.external_ids?.ean && { ean: album.external_ids.ean }),
+    ...(album.external_ids?.isrc && { isrc: album.external_ids.isrc }),
+    popularity: album.popularity,
+    popularityHistory: {
+      create: {
+        popularity: album.popularity,
+      },
+    },
+    artists: {
+      connectOrCreate: album.artists.map((artist) => {
+        return {
+          where: {
+            id: artist.id,
+          },
+          create: {
+            id: artist.id,
+            name: artist.name,
+            slug: slugify(artist.name, { lower: true }),
+            apiHref: artist.href,
+            spotifyUrl: artist.external_urls.spotify,
+            popularity: artist.popularity,
+            followers: artist.followers?.total || 0,
+            images: artist.images
+              ? {
+                  createMany: {
+                    skipDuplicates: true,
+                    data: artist.images?.map((image) => {
+                      return {
+                        id: extractImageId(image.url),
+                        url: image.url,
+                        width: image.width,
+                        height: image.height,
+                      };
+                    }),
+                  },
+                }
+              : undefined,
+            popularityHistory: {
+              create: {
+                popularity: artist.popularity,
+              },
+            },
+            followersHistory: {
+              create: {
+                followers: artist.followers?.total || 0,
+              },
+            },
+          },
+        };
+      }),
+    },
+    images: {
+      createMany: {
+        skipDuplicates: true,
+        data: album.images.map((image) => {
+          return {
+            id: extractImageId(image.url),
+            url: image.url,
+            width: image.width,
+            height: image.height,
+          };
+        }),
+      },
+    },
   };
 };
 

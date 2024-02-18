@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, LoaderFunctionArgs, json } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { json } from "@remix-run/node";
 
 import { getCachedAlbum } from "~/models/spotify/album";
 import { authenticator } from "~/services/auth/config.server";

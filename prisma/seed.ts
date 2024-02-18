@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client";
+
 // import { db } from "~/utils/db.server";
 
 import { getAllPlans } from "~/models/plan/get-plan";
+
 // import { PRICING_PLANS } from "~/services/stripe/plans";
 // import { configureStripeCustomerPortal } from "~/services/stripe/api/configure-customer-portal";
 // import { getStripePrices } from "~/services/stripe/api/get-prices";

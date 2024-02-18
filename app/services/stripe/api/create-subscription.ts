@@ -1,4 +1,4 @@
-import type { User, Price } from "@prisma/client";
+import type { Price, User } from "@prisma/client";
 import type { Stripe } from "stripe";
 
 import { stripe } from "~/services/stripe/config.server";

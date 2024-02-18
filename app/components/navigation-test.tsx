@@ -1,10 +1,12 @@
 import type { User } from "@prisma/client";
-import { Link, Form, useLocation } from "@remix-run/react";
+import { Form, Link, useLocation } from "@remix-run/react";
 
+import type { MaybeJsonified } from "~/utils/types";
 import { MaxWidthWrapper } from "./page/max-width-wrapper";
+import { Button, buttonVariants } from "./ui/button";
 
 interface NavigationProps {
-  user: User | null;
+  user: MaybeJsonified<User> | null;
 }
 
 export function Navigation({ user }: NavigationProps) {
@@ -21,7 +23,10 @@ export function Navigation({ user }: NavigationProps) {
         >
           <span className="font-bold text-primary">Artst</span>
           <div className="mx-1" />
-          <small className="relative top-[2px] text-sm font-extrabold text-blue-700 dark:text-orange-200" aria-hidden>
+          <small
+            className="relative top-[2px] text-sm font-extrabold text-blue-700 dark:text-orange-200"
+            aria-hidden
+          >
             beta
           </small>
         </Link>
@@ -37,29 +42,29 @@ export function Navigation({ user }: NavigationProps) {
             Subscription
           </Link>
 
-          {!user ? <>
+          {!user ? (
+            <>
               <div className="mx-3" />
               <Link
                 to="/login"
-                className="flex h-10 flex-row items-center rounded-xl border border-border px-4 font-bold text-primary
-					      transition hover:scale-105 hover:border-border/50 active:opacity-80"
+                className={buttonVariants({
+                  variant: "outline",
+                })}
               >
                 Login
               </Link>
-            </> : null}
+            </>
+          ) : null}
 
           {/* Log Out Form Button. */}
-          {user ? <>
+          {user ? (
+            <>
               <div className="mx-3" />
               <Form action="/auth/logout" method="post">
-                <button
-                  className="flex h-10 flex-row items-center rounded-xl border border-border px-4 font-bold text-primary-foreground
-					      transition hover:scale-105 hover:border-gray-200 hover:text-gray-100 active:opacity-80"
-                >
-                  Log Out
-                </button>
+                <Button variant="outline">Log Out</Button>
               </Form>
-            </> : null}
+            </>
+          ) : null}
         </div>
       </MaxWidthWrapper>
     </header>

@@ -1,4 +1,5 @@
 import { AnimatedTooltip } from "./ui/animated-tooltip";
+
 const people = [
   {
     id: 1,
@@ -46,7 +47,7 @@ const people = [
 
 export function AnimatedTooltipPreview() {
   return (
-    <div className="flex flex-row items-center justify-center mt-10 w-full">
+    <div className="mt-10 flex w-full flex-row items-center justify-center">
       <AnimatedTooltip items={people} />
     </div>
   );

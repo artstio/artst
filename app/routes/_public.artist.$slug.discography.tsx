@@ -1,18 +1,14 @@
-import {
-  LoaderFunctionArgs,
-  MetaFunction,
-  json,
-  redirect,
-} from "@remix-run/node";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+import { db } from "~/utils/db.server";
 import { Navigation } from "~/components/navigation-test";
 import { PageContent } from "~/components/page";
 import { Section } from "~/components/section";
 import { AlbumList } from "~/components/spotify/album-list";
 import { ArtistHeroHeader } from "~/components/spotify/artist/hero";
 import { ListenPlatformLinks } from "~/components/spotify/platform-links";
-import { db } from "~/utils/db.server";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const { slug } = params;
@@ -109,7 +105,7 @@ export default function ArtistDiscographyPage() {
 
       <ArtistHeroHeader artist={artist} />
 
-      <PageContent className="space-y-6 md:space-y-12 mt-[calc(25vh_-_2rem)] md:mt-[calc(30vh_-_2rem)]">
+      <PageContent className="mt-[calc(25vh_-_2rem)] space-y-6 md:mt-[calc(30vh_-_2rem)] md:space-y-12">
         <ListenPlatformLinks platforms={platformLinks} />
 
         <Section title="Discography">

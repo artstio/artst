@@ -22,18 +22,20 @@ export function Section({
           {title}
         </Typography>
 
-        {showAllProps ? <Link
+        {showAllProps ? (
+          <Link
             to={showAllProps.to}
             aria-label={showAllProps.altText ?? `See all content for ${title}`}
           >
             <Typography
               variant="muted"
               size="sm"
-              className="hover:text-white transition-all"
+              className="transition-all hover:text-white"
             >
               {showAllProps.text}
             </Typography>
-          </Link> : null}
+          </Link>
+        ) : null}
       </div>
       {children}
     </div>

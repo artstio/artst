@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 import { PageHeader } from "./page";
 import { MaxWidthWrapper } from "./page/max-width-wrapper";
@@ -17,7 +17,7 @@ export default function SettingsLayout({
   return (
     <div className="h-[calc(100vh-16px)] bg-white">
       <PageHeader title="Settings" />
-      <MaxWidthWrapper className="grid items-start gap-5 pt-4 pb-8 md:grid-cols-5">
+      <MaxWidthWrapper className="grid items-start gap-5 pb-8 pt-4 md:grid-cols-5">
         <div className="top-36 flex gap-1 md:sticky md:grid">
           {tabs.map(({ name, segment }) => (
             <SettingsNavLink key={`${name}-${segment}`} to={segment}>

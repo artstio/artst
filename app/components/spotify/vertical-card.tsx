@@ -1,7 +1,6 @@
 import { Link } from "@remix-run/react";
 
-import { ImageProps } from "~/models/spotify/image/types";
-
+import type { ImageProps } from "~/models/spotify/image/types";
 import { Typography } from "../ui/typography";
 
 interface LinkProps {
@@ -29,14 +28,14 @@ export const VerticalCard = ({
   return (
     <AlbumLink>
       <div className="" itemType="http://schema.org/MusicAlbum">
-        <div className="group flex-1 p-4 md:p-5 bg-card hover:bg-card-hover rounded-md space-y-5 transition-all">
+        <div className="group flex-1 space-y-4 rounded-md bg-card p-4 transition-all hover:bg-card-hover md:p-5">
           <div className="">
             <img
               src={image.url}
               alt={name}
               // width={width}
               // height={image.height}
-              className="rounded-sm group-hover:shadow-md shadow-sm transition-all aspect-square snap-center w-full h-full"
+              className="aspect-square h-full w-full snap-center rounded-sm shadow-sm transition-all group-hover:shadow-md"
               loading="lazy"
             />
           </div>
@@ -47,12 +46,13 @@ export const VerticalCard = ({
               <Typography
                 size="md"
                 weight="bold"
-                className="leading-snug truncate"
+                className="truncate leading-snug"
                 itemProp="name"
               >
                 {name}
               </Typography>
-              {subtexts ? <div className="flex items-center gap-0.5">
+              {subtexts ? (
+                <div className="flex items-center gap-0.5">
                   {subtexts.map((subtext, index) => (
                     <div key={index} className="flex items-center">
                       <Typography
@@ -65,13 +65,16 @@ export const VerticalCard = ({
 
                       {/* separator dot */}
                       <>
-                        {index < subtexts.length - 1 ? <span className="text-neutral-500 mx-1 leading-tight">
+                        {index < subtexts.length - 1 ? (
+                          <span className="mx-1 leading-tight text-neutral-500">
                             •
-                          </span> : null}
+                          </span>
+                        ) : null}
                       </>
                     </div>
                   ))}
-                </div> : null}
+                </div>
+              ) : null}
             </div>
           </div>
           {/* </AlbumLink> */}
